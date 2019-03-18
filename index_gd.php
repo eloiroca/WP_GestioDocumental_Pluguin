@@ -56,10 +56,10 @@ comprobar_dadesPerDefecte();
 //Funcio que creara els menus i submenu dins del panel dadministracio del WP
 function crear_menu_pluguin(){
   add_menu_page('GestioDocumental', 'GestioDocumental', 'manage_options', 'gestio-menu', 'crear_menu_general',plugins_url( 'gestiodocumentalpluguin/assets/img/icon.png' ));
-  add_submenu_page( 'gestio-menu', 'GestioCarpetes', 'GestioCarpetes', 'manage_options', 'gestio-menu-carpetes', 'crear_menu_carpetes');
-  add_submenu_page( 'gestio-menu', 'GestioContrasenyes', 'GestioContrasenyes', 'manage_options', 'gestio-menu-contrasenyes', 'crear_menu_contrasenyes');
-  add_submenu_page( 'gestio-menu', 'GestioCodi', 'GestioCodi', 'manage_options', 'gestio-menu-codi', 'crear_menu_carpetes');
-  add_submenu_page( 'gestio-menu', 'GestioBackups', 'GestioBackups', 'manage_options', 'gestio-menu-backups', 'crear_menu_carpetes');
+  if (estat_modul("GestioDocumental")=="true"){add_submenu_page( 'gestio-menu', 'GestioCarpetes', 'GestioCarpetes', 'manage_options', 'gestio-menu-carpetes', 'crear_menu_carpetes');}
+  if (estat_modul("GestioContrasenyes")=="true"){add_submenu_page( 'gestio-menu', 'GestioContrasenyes', 'GestioContrasenyes', 'manage_options', 'gestio-menu-contrasenyes', 'crear_menu_contrasenyes');}
+  if (estat_modul("GestioCodi")=="true"){add_submenu_page( 'gestio-menu', 'GestioCodi', 'GestioCodi', 'manage_options', 'gestio-menu-codi', 'crear_menu_carpetes');}
+  if (estat_modul("GestioBackups")=="true"){add_submenu_page( 'gestio-menu', 'GestioBackups', 'GestioBackups', 'manage_options', 'gestio-menu-backups', 'crear_menu_carpetes');}
 }
 add_action('admin_menu', 'crear_menu_pluguin');
 

@@ -6,21 +6,18 @@ jQuery(document).ready(function(){
   jQuery('.btn_guardarParametres').click(function() {
       var parametre_ruta_arrel_carpetes = jQuery("#rutaCarpetes").val();
       var parametre_fitxers_per_fila =  jQuery("#fitxersFila").val();
+      var parametre_estat_moduls = {};
 
-      if(jQuery("#documental").is(':checked')){ estatGestioDocumental = 1;}else{estatGestioDocumental = 0;}
-      if(jQuery("#contrasenyes").is(':checked')){ estatGestioContrasenyes = 1;}else{estatGestioContrasenyes = 0;}
-      if(jQuery("#codi").is(':checked')){ estatGestioCodi = 1;}else{estatGestioCodi = 0;}
-      if(jQuery("#backups").is(':checked')){ estatGestioBackups = 1;}else{estatGestioBackups = 0;}
-
-
-      var parametre_estat_moduls = ["toma", estatGestioContrasenyes, estatGestioCodi, estatGestioBackups];
+      if(jQuery("#documental").is(':checked')){ parametre_estat_moduls["GestioDocumental"] = true;}else{parametre_estat_moduls["GestioDocumental"] = false;}
+      if(jQuery("#contrasenyes").is(':checked')){ parametre_estat_moduls["GestioContrasenyes"] = true;}else{parametre_estat_moduls["GestioContrasenyes"] = false;}
+      if(jQuery("#codi").is(':checked')){ parametre_estat_moduls["GestioCodi"] = true;}else{parametre_estat_moduls["GestioCodi"] = false;}
+      if(jQuery("#backups").is(':checked')){ parametre_estat_moduls["GestioBackups"] = true;}else{parametre_estat_moduls["GestioBackups"] = false;}
 
       var data = {'action': 'guardarParametresBD',
                     'valorParametreRuta' : parametre_ruta_arrel_carpetes,
                     'valorParametreFitxersPerFila' : parametre_fitxers_per_fila,
                     'valorParametreEstatModuls': parametre_estat_moduls
                   }
-      console.log(data);
 
       jQuery.ajax({
             type : "post",
@@ -40,31 +37,6 @@ jQuery(document).ready(function(){
                 console.log(response);
             }
         });
-
-        /*
-        var sortOrder = [adeu,3,2,5,5];
-        var jsonString = JSON.stringify(sortOrder);
-        jQuery.ajax({
-          type: "POST",
-          url: ajax_object.ajax_url,
-          data: {'action': 'guardarParametresBD', sort_order : jsonString },
-          cache: false,
-          success: function(responseData) {
-              // consider using console.log for these kind of things.
-              //alert("Data recived: " + responseData);
-              console.log(responseData);
-          }
-      })*/
-
-/* JSON-encoded object:
-{
-  "name": "John",
-  "age": 30,
-  "isAdmin": false,
-  "courses": ["html", "css", "js"],
-  "wife": null
-}
-*/
   });
 
   //Funcio per la quantitat de fitxers per fila vol l'usuari

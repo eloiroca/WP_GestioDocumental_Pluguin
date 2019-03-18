@@ -5,15 +5,13 @@
     function guardarParametresBD() {
       $valorParametreRuta = $_POST['valorParametreRuta'];
       $valorParametreFitxersFila = $_POST['valorParametreFitxersPerFila'];
-      echo $valorParametreRuta;
-      echo $valorParametreFitxersFila;
-      print_r($_POST['valorParametreEstatModuls']);
-
-      /*
-      $data = json_decode(stripslashes($_POST['valorParametreEstatModuls']));
-      print_r($data);
+      $valorEstatsModuls = $_POST['valorParametreEstatModuls'];
       global $wpdb;
       $wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorParametreFitxersFila."' where nom = 'parametre_mostrar_fitxers_per_fila'");
+      $wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorEstatsModuls['GestioDocumental']."' where nom = 'parametre_estat_modul_GestioDocumental'");
+      $wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorEstatsModuls['GestioContrasenyes']."' where nom = 'parametre_estat_modul_GestioContrasenyes'");
+      $wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorEstatsModuls['GestioCodi']."' where nom = 'parametre_estat_modul_GestioCodi'");
+      $wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorEstatsModuls['GestioBackups']."' where nom = 'parametre_estat_modul_GestioBackups'");
 
       if (is_dir($valorParametreRuta)){
         //Ens connectem a la base de dades i guardem el parametre.
@@ -23,15 +21,7 @@
         $wpdb->get_results("update gd_pluguin_parametres set valor = '.' where nom = 'parametre_ruta_arrel_carpetes'");
         echo false;
       }
-      echo "hola";
-      echo $array[2];*/
-      //echo "hola";
-      //$myArray = json_decode($_POST['kvcArray']);
-      //echo json_decode($_POST['valorParametreEstatModuls']);
-      //echo json_decode( $_POST['kvcArray'], $assoc_array = false );
-      //$request = json_decode($_POST['valorParametreEstatModuls']);
-      //print_r($request);
-      //echo "hola";
+      //print_r($_POST['valorParametreEstatModuls']);
     	wp_die();
     }
 
@@ -50,7 +40,11 @@
       $numParametres = $wpdb->get_row( "select count(id) numIds from gd_pluguin_parametres" );
       if ($numParametres->numIds == 0){
           $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_ruta_arrel_carpetes','.')" );
-          $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_mostrar_fitxers_per_fila',' 9')" );
+          $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_mostrar_fitxers_per_fila','5')" );
+          $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_estat_modul_GestioDocumental','true')" );
+          $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_estat_modul_GestioContrasenyes','false')" );
+          $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_estat_modul_GestioCodi','false')" );
+          $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_estat_modul_GestioBackups','false')" );
       }
     }
 
@@ -413,7 +407,9 @@
     return isset($formulas[$to]) ? $formulas[$to] : 0;
 }
 
-add_action( "add_meta_boxes_page", "se20892273_add_meta_boxes_page" );
+if (estat_modul("GestioDocumental")=="true"){
+    add_action( "add_meta_boxes_page", "se20892273_add_meta_boxes_page" );
+}
 
 // Register Your Meta box
 function se20892273_add_meta_boxes_page( $post )
@@ -436,24 +432,27 @@ function assignar_carpeta_meta_box( $post ){
 add_action( "save_post_page", "se20892273_save_post_page" );
 function se20892273_save_post_page( $post_ID )
 {
-    if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE )
-        return $post_ID ;
+    if (estat_modul("GestioDocumental")=="true"){
+        if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE )
+            return $post_ID ;
 
-    if( isset( $_POST['input_name'] ))
-    {
-        update_post_meta( $post_ID, '_w4_template', $_POST['input_name'] );
+        if( isset( $_POST['input_name'] ))
+        {
+            update_post_meta( $post_ID, '_w4_template', $_POST['input_name'] );
+        }
     }
 }
 
 //Funcio que pintara la carpeta assignada a la Pagina final, es a dir a la WEB
 add_action('wp_footer', 'pintarCosPluguinPaginaFinal');
 function pintarCosPluguinPaginaFinal() {
-  $idPagina = get_the_ID();
-  if (existeix_assignacio_pagina($idPagina)){
-      $carpetaAssignada = recuperarCarpetaAssignada($idPagina);
-      include plugin_dir_path( __DIR__ ).'views/vista_carpetes_pagina_Final_gd.php';
+  if (estat_modul("GestioDocumental")=="true"){
+      $idPagina = get_the_ID();
+      if (existeix_assignacio_pagina($idPagina)){
+          $carpetaAssignada = recuperarCarpetaAssignada($idPagina);
+          include plugin_dir_path( __DIR__ ).'views/vista_carpetes_pagina_Final_gd.php';
+      }
   }
-
 }
 
 function body_classs( $class = '' ) {
@@ -497,5 +496,11 @@ function eliminarInfoAssignacio(){
     global $wpdb;
     $wpdb->get_row( "delete from gd_pluguin_carpetesAssignades where id_pagina = ".$id_pagina."");
     echo "aaa";
+}
+//Funcio per saber si un modul esta actiu o no
+function estat_modul($nomModul){
+    global $wpdb;
+    $estat = $wpdb->get_row( "select valor from gd_pluguin_parametres where nom = 'parametre_estat_modul_".$nomModul."'");
+    return $estat->valor;
 }
 ?>
