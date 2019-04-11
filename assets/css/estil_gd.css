@@ -599,18 +599,18 @@ input#filtre_contrasenyes {
 }
 
 
-input[type=checkbox] + label {
+input[type=checkbox].check_bonic + label {
   display: block;
   margin: 0.2em;
   cursor: pointer;
   padding: 0.2em;
 }
 
-input[type=checkbox] {
+input[type=checkbox].check_bonic {
   display: none;
 }
 
-input[type=checkbox] + label:before {
+input[type=checkbox].check_bonic + label:before {
   content: "\2714";
   border: 0.1em solid #000;
   border-radius: 0.2em;
@@ -625,11 +625,11 @@ input[type=checkbox] + label:before {
   transition: .2s;
 }
 
-input[type=checkbox] + label:active:before {
+input[type=checkbox].check_bonic + label:active:before {
   transform: scale(0);
 }
 
-input[type=checkbox]:checked + label:before {
+input[type=checkbox].check_bonic:checked + label:before {
   background-color: MediumSeaGreen;
   border-color: MediumSeaGreen;
   color: #fff;

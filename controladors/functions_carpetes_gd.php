@@ -382,7 +382,7 @@
 
         return $estructura_directori;
     }
-    add_action('add_meta_boxes', 'add_meta_boxes_post_type_switcher',10,2);
+    /*add_action('add_meta_boxes', 'add_meta_boxes_post_type_switcher',10,2);
     function add_meta_boxes_post_type_switcher($post_type,$post) {
       global $pagenow;
       if ($pagenow=='post-new.php') {
@@ -396,7 +396,7 @@
       $post_types = get_post_types();
       $new_post_url = admin_url('post-new.php');
 
-    }
+    }*/
 
     function isa_convert_bytes_to_specified($bytes, $to, $decimal_places = 1) {
     $formulas = array(
@@ -408,6 +408,7 @@
 }
 
 if (estat_modul("GestioDocumental")=="true"){
+    add_action( "add_meta_boxes", "se20892273_add_meta_boxes_entry" );
     add_action( "add_meta_boxes_page", "se20892273_add_meta_boxes_page" );
 }
 
@@ -423,13 +424,25 @@ function se20892273_add_meta_boxes_page( $post )
        'core'
     );
 }
-
+// Register Your Meta box
+function se20892273_add_meta_boxes_entry( $post )
+{
+    add_meta_box(
+       'assignar_carpeta_meta_box', // this is HTML id
+       'Assignar carpeta a la pàgina actual',
+       'assignar_carpeta_meta_box', // the callback function
+       'post', // register on post type = page
+       'side', //
+       'core'
+    );
+}
 function assignar_carpeta_meta_box( $post ){
     //Carreguem la vista del meta box
     include plugin_dir_path( __DIR__ ).'views/vista_carpetes_meta_box_gd.php';
 }
 
 add_action( "save_post_page", "se20892273_save_post_page" );
+//add_action( "save_post_entry", "se20892273_save_post_page" );
 function se20892273_save_post_page( $post_ID )
 {
     if (estat_modul("GestioDocumental")=="true"){

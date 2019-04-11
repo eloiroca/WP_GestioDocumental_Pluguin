@@ -23,19 +23,19 @@
                   <form>
                       <div class="row">
                         <div class="col-md-3">
-                          <input type="checkbox" id="documental" name="modul_documental" value="GestioDocumental">
+                          <input class="check_bonic" type="checkbox" id="documental" name="modul_documental" value="GestioDocumental">
                           <label for="documental">Mòdul GestioCarpetes</label>
                       </div>
                       <div class="col-md-3">
-                          <input type="checkbox" id="contrasenyes" name="modul_contrasenyes" value="GestioContrasenyes">
+                          <input class="check_bonic" type="checkbox" id="contrasenyes" name="modul_contrasenyes" value="GestioContrasenyes">
                           <label for="contrasenyes">Mòdul GestioContrasenyes</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="checkbox" id="codi" name="modul_codi" value="GestioCodi">
+                        <input class="check_bonic" type="checkbox" id="codi" name="modul_codi" value="GestioCodi">
                         <label for="codi">Mòdul GestioCodi</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="checkbox" id="backups" name="modul_backups" value="GestioBackups">
+                        <input class="check_bonic" type="checkbox" id="backups" name="modul_backups" value="GestioBackups">
                         <label for="backups">Mòdul GestioBackups</label>
                     </div>
                     </div>
