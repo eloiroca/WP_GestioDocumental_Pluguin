@@ -7,6 +7,7 @@
       $valorParametreFitxersFila = $_POST['valorParametreFitxersPerFila'];
       $valorEstatsModuls = $_POST['valorParametreEstatModuls'];
       global $wpdb;
+
       $wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorParametreFitxersFila."' where nom = 'parametre_mostrar_fitxers_per_fila'");
       $wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorEstatsModuls['GestioDocumental']."' where nom = 'parametre_estat_modul_GestioDocumental'");
       $wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorEstatsModuls['GestioContrasenyes']."' where nom = 'parametre_estat_modul_GestioContrasenyes'");
@@ -27,7 +28,7 @@
 
     add_action( 'wp_function_comprobar_dadesPerDefecte', 'comprobar_dadesPerDefecte' );
     //ComprobacioDadesPerDefecte
-    function comprobar_dadesPerDefecte(){
+    function comprobar_dadesPerDefecte($versio){
       //Comprobarem que s'hagin creat les taules corresponents per poder utilitzar el pluguin
       global $wpdb;
       //Crear taula parametres
@@ -39,6 +40,7 @@
       //S'hi no hi ha entrades de parametres creem els de per defecte
       $numParametres = $wpdb->get_row( "select count(id) numIds from gd_pluguin_parametres" );
       if ($numParametres->numIds == 0){
+          $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_versio_pluguin','".$versio."')" );
           $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_ruta_arrel_carpetes','.')" );
           $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_mostrar_fitxers_per_fila','5')" );
           $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_estat_modul_GestioDocumental','true')" );
@@ -46,6 +48,14 @@
           $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_estat_modul_GestioCodi','false')" );
           $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_estat_modul_GestioBackups','false')" );
       }
+      //Actualitzem la versio sempre que la canviem
+      $wpdb->get_results("update gd_pluguin_parametres set valor = '".$versio."' where nom = 'parametre_versio_pluguin'");
+    }
+    //Funcio que retornara la versio actual
+    function obtenirVersio(){
+        global $wpdb;
+        $versio = $wpdb->get_row( "select valor from gd_pluguin_parametres where nom = 'parametre_versio_pluguin'" );
+        return $versio->valor;
     }
 
     //Funcio per crear una nova carpeta
@@ -463,7 +473,15 @@ function pintarCosPluguinPaginaFinal() {
       $idPagina = get_the_ID();
       if (existeix_assignacio_pagina($idPagina)){
           $carpetaAssignada = recuperarCarpetaAssignada($idPagina);
-          include plugin_dir_path( __DIR__ ).'views/vista_carpetes_pagina_Final_gd.php';
+          $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+          $actual_link_explode2 = explode('/', $actual_link);
+          $actual_link_explode3 = explode('/?', $actual_link);
+          $actual_link_explode3 = substr($actual_link_explode3[1], 0, 2);
+
+          if (!in_array("category", $actual_link_explode2) && $actual_link_explode3 != 's=') {
+              include plugin_dir_path( __DIR__ ).'views/vista_carpetes_pagina_Final_gd.php';
+          }
+
       }
   }
 }

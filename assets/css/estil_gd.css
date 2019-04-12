@@ -634,3 +634,9 @@ input[type=checkbox].check_bonic:checked + label:before {
   border-color: MediumSeaGreen;
   color: #fff;
 }
+
+.versioAplicacio{
+    color: black;
+    font-style: italic;
+    font-weight: bold;
+}

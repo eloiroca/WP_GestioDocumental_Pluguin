@@ -6,6 +6,7 @@
   <div class="panel-body">
 			<div class="logo_col col-xs col-sm-fit logo_documental_pluguin">
 					<img src="<?php echo plugins_url("gestiodocumentalpluguin/assets/img/logo_documental.png"); ?>" />
+          <?php echo "<br><p class='versioAplicacio'>Versió ". obtenirVersio(); ?>
 			</div>
   </div>
 </div>

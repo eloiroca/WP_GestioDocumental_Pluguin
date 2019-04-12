@@ -9,14 +9,14 @@ Author URI:
 License:
 License URI:
 */
-
+$versio = "1.2.7";
 include 'controladors\functions_carpetes_gd.php';
 include 'controladors\functions_contrasenyes_gd.php';
 
 //Encuarem els estils, JS, etc dins del wordpress
 
 //function encuar_estils_pluguin(){
-    $versio = "1.0.0";
+    //$versio = "1.0.0";
 
     wp_enqueue_style( 'style-compsaonline', plugins_url( 'gestiodocumentalpluguin/assets/css/estil_gd.css'), array(), $versio);
     wp_enqueue_style( 'style-modals', plugins_url( 'gestiodocumentalpluguin/assets/css/formularis_modals.css'), array(), $versio);
@@ -51,7 +51,7 @@ include 'controladors\functions_contrasenyes_gd.php';
 
 //do_action( 'wp_enqueue_scripts' );
 //S'hi es la primera vegada que executa el pluguin activarem les taules a la BD
-comprobar_dadesPerDefecte();
+comprobar_dadesPerDefecte($versio);
 
 //Funcio que creara els menus i submenu dins del panel dadministracio del WP
 function crear_menu_pluguin(){
