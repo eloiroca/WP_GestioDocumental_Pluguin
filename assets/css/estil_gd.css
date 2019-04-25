@@ -241,13 +241,13 @@
   margin-bottom: 10px;
 }
 
-.btn_pujarFitxers, .btn_eliminarFitxers, .btn_eliminarContrasenya, .btn_afegirContrasenya, .btn_modificarContrasenya, .btn_eliminarAssignacio, .btn_modificarInfoAssignacio, .btn_eliminarInfoAssignacio, .btn_examinarInfoAssignacio, .btn_infoFitxers, .btn_homeFitxers, .btn_infoFitxersAssignacio, .btn_afegirCarpeta, .btn_renombrarFitxers, .btn_actualitzarFitxers, .btn_tirarEndarrera, .btn_renombrarFitxersConfirmar{
+.btn_pujarFitxers, .btn_eliminarFitxers, .btn_eliminarContrasenya, .btn_afegirContrasenya, .btn_modificarContrasenya, .btn_eliminarAssignacio, .btn_modificarInfoAssignacio, .btn_eliminarInfoAssignacio, .btn_examinarInfoAssignacio, .btn_infoFitxers, .btn_homeFitxers, .btn_guardarFitxers, .btn_infoFitxersAssignacio, .btn_afegirCarpeta, .btn_renombrarFitxers, .btn_actualitzarFitxers, .btn_tirarEndarrera, .btn_renombrarFitxersConfirmar{
   background-color: transparent !important;
   border-color: transparent !important;
   padding: 5px !important;
 }
 
-.btn_renombrarFitxersConfirmar:hover, .btn_modificarInfoAssignacio:hover, .btn_afegirCarpeta:hover, .btn_examinarInfoAssignacio:hover, .btn_eliminarInfoAssignacio:hover, .btn_eliminarAssignacio:hover, .btn_infoFitxersAssignacio:hover, .btn_homeFitxers:hover, .btn_infoFitxers:hover, .btn_pujarFitxers:hover, .btn_pujarFitxers:hover, .btn_eliminarFitxers:hover, .btn_renombrarFitxers:hover, .btn_actualitzarFitxers:hover, .btn_tirarEndarrera:hover{
+.btn_renombrarFitxersConfirmar:hover, .btn_modificarInfoAssignacio:hover, .btn_afegirCarpeta:hover, .btn_examinarInfoAssignacio:hover, .btn_eliminarInfoAssignacio:hover, .btn_eliminarAssignacio:hover, .btn_infoFitxersAssignacio:hover, .btn_guardarFitxers:hover, .btn_homeFitxers:hover, .btn_infoFitxers:hover, .btn_pujarFitxers:hover, .btn_pujarFitxers:hover, .btn_eliminarFitxers:hover, .btn_renombrarFitxers:hover, .btn_actualitzarFitxers:hover, .btn_tirarEndarrera:hover{
   opacity: 0.5;
 }
 .btn_afegirContrasenya:hover, .btn_eliminarContrasenya:hover, .btn_modificarContrasenya:hover{
@@ -639,4 +639,8 @@ input[type=checkbox].check_bonic:checked + label:before {
     color: black;
     font-style: italic;
     font-weight: bold;
+}
+
+.CodeMirror {
+    height: 90000px !important;
 }
