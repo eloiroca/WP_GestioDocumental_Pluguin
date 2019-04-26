@@ -161,6 +161,43 @@
 
 }
 
+#backups_tipus{
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: .25rem;
+    border-left: 3px solid red;
+    border-right: 3px solid red;
+    text-align: center;
+    margin-bottom: 9px !important;
+}
+
+.btn.btn-primary.btn-lg.btn-block.boto_backup{
+    color: #AF4FD0 !important;
+    border-color: #AF4FD0 !important;
+
+}
+
+.progress{
+    margin-top: 10px;
+}
+
+.progress-bar-animated{
+    background-color: #AF4FD0 !important;
+}
+
+.progress_pc_eloi{
+    display: none;
+}
+
+.progress_codi{
+    display: none;
+}
+
+.progress_bd{
+    display: none;
+}
+
+
 .separador{
   width: 100%;
   float: right;
@@ -168,7 +205,7 @@
 }
 
 
-.titol_parametres{
+.titol_parametres, .titol_backups{
     display: table-cell;
     vertical-align: middle;
     font-size: 20px !important;

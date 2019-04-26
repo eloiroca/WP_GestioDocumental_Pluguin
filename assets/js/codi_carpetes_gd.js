@@ -18,7 +18,7 @@ jQuery(document).ready(function(){
                     'valorParametreFitxersPerFila' : parametre_fitxers_per_fila,
                     'valorParametreEstatModuls': parametre_estat_moduls
                   }
-
+                  
       jQuery.ajax({
             type : "post",
             url : ajax_object.ajax_url,

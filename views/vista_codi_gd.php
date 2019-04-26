@@ -1,11 +1,4 @@
-<?php
-
-
-
- ?>
-
-
- <div id="titol_vista_pluguin" class="panel panel-primary">
+<div id="titol_vista_pluguin" class="panel panel-primary">
   <div class="panel-body">
 			<div class="logo_col col-xs col-sm-fit logo_documental_pluguin">
 					<img src="<?php echo plugins_url("gestiodocumentalpluguin/assets/img/icono-codi.png"); ?>" />
@@ -21,7 +14,7 @@
 
              <div class="row">
                <div class="col-md-12 panell_opcions">
-                  <button type="button" name="button" class="btn btn-primary btn_navegaciofitxers btn_guardarFitxers float-right"><img class="imgOpcions" src='<?php echo plugins_url( 'gestiodocumentalpluguin/assets/img/icono-guardar.png'); ?>'></button>
+                  <button type="button" name="button" class="btn btn-primary btn_navegaciofitxers btn_guardarFitxers float-right"><p style="color:black;">Guardar Codi</p><img class="imgOpcions" src='<?php echo plugins_url( 'gestiodocumentalpluguin/assets/img/icono-guardar.png'); ?>'></button>
 
                </div>
                <hr class="separador">
@@ -29,7 +22,7 @@
 
              <div class="row">
                <form id='formulari_codi' action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="POST">
-                  <textarea name="codi" id="myTextarea" style="height: 200%;"><?php	$archivo = plugin_dir_path( __DIR__ ).'/assets/php/codi.php';	$abrir = fopen($archivo, "r"); $contenido = fread($abrir, filesize($archivo)); fclose($abrir); echo $contenido;?></textarea>
+                  <textarea name="codi" id="myTextarea"><?php	$archivo = plugin_dir_path( __DIR__ ).'/assets/php/codi.php';	$abrir = fopen($archivo, "r"); $contenido = fread($abrir, filesize($archivo)); fclose($abrir); echo $contenido;?></textarea>
             	 </form>
 
 
