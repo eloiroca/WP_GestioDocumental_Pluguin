@@ -197,6 +197,14 @@
     display: none;
 }
 
+.dades_backups{
+
+    word-wrap: break-word;
+}
+
+.info_dades_backups{
+    color: #AF54D4;
+}
 
 .separador{
   width: 100%;

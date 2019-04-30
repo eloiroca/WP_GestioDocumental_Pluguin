@@ -40,6 +40,7 @@
       //S'hi no hi ha entrades de parametres creem els de per defecte
       $numParametres = $wpdb->get_row( "select count(id) numIds from gd_pluguin_parametres" );
       if ($numParametres->numIds == 0){
+
           $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_versio_pluguin','".$versio."')" );
           $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_ruta_arrel_carpetes','.')" );
           $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_mostrar_fitxers_per_fila','5')" );
@@ -47,6 +48,12 @@
           $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_estat_modul_GestioContrasenyes','false')" );
           $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_estat_modul_GestioCodi','false')" );
           $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_estat_modul_GestioBackups','false')" );
+          $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_SqlOrigen_backup','gd_pluguin_parametres,gd_pluguin_contrasenyes,gd_pluguin_carpetesassignades')" );
+          $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_SqlDesti_backup','C:\\\Users\\\Eloi\\\Desktop\\\Backups GD\\\Base de Dades')" );
+          $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_CodiOrigen_backup','".str_replace('\\', '/', plugin_dir_path( __DIR__ )).'assets/php/codi.php'."')" );
+          $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_CodiDesti_backup','C:\\\Users\\\Eloi\\\Desktop\\\Backups GD\\\Codi')" );
+
+
       }
       //Actualitzem la versio sempre que la canviem
       $wpdb->get_results("update gd_pluguin_parametres set valor = '".$versio."' where nom = 'parametre_versio_pluguin'");
@@ -269,6 +276,30 @@
     function obtenirParametreRutaDefecte(){
         global $wpdb;
         $valorParametre = $wpdb->get_row( "select valor from gd_pluguin_parametres where nom='parametre_ruta_arrel_carpetes'" );
+        return $valorParametre->valor;
+    }
+
+    function obtenirParametreTaulesDefecte(){
+        global $wpdb;
+        $valorParametre = $wpdb->get_row( "select valor from gd_pluguin_parametres where nom='parametre_SqlOrigen_backup'" );
+        return $valorParametre->valor;
+    }
+
+    function obtenirParametreTaulesDestiDefecte(){
+        global $wpdb;
+        $valorParametre = $wpdb->get_row( "select valor from gd_pluguin_parametres where nom='parametre_SqlDesti_backup'" );
+        return $valorParametre->valor;
+    }
+
+    function obtenirParametreCodiOrigenBackupDefecte(){
+        global $wpdb;
+        $valorParametre = $wpdb->get_row( "select valor from gd_pluguin_parametres where nom='parametre_CodiOrigen_backup'" );
+        return $valorParametre->valor;
+    }
+
+    function obtenirParametreCodiDestiBackupDefecte(){
+        global $wpdb;
+        $valorParametre = $wpdb->get_row( "select valor from gd_pluguin_parametres where nom='parametre_CodiDesti_backup'" );
         return $valorParametre->valor;
     }
 

@@ -14,7 +14,7 @@
 
              <div class="row">
                <div class="col-md-12 panell_opcions">
-                  <button type="button" name="button" class="btn btn-primary btn_navegaciofitxers btn_guardarFitxers float-right"><p style="color:black;">Guardar Codi</p><img class="imgOpcions" src='<?php echo plugins_url( 'gestiodocumentalpluguin/assets/img/icono-guardar.png'); ?>'></button>
+                  <button type="button" name="button" class="btn btn-primary btn_navegaciofitxers btn_guardarFitxers float-right"><img class="imgOpcions" src='<?php echo plugins_url( 'gestiodocumentalpluguin/assets/img/icono-guardar.png'); ?>'></button>
 
                </div>
                <hr class="separador">

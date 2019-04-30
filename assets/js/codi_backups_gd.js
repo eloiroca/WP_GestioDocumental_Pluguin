@@ -44,10 +44,8 @@ jQuery(document).ready(function(){
     });
     jQuery('.boto_backup_bd').click(function() {
         jQuery('.progress_bd').css('display', 'block');
-        /*
-        var data = {'action': 'guardarFitxerCodi',
-                      'valorFormulari' : contingut
-                    }
+
+        var data = {'action': 'realitzar_backup_db'}
         jQuery.ajax({
               type : "post",
               url : ajax_object.ajax_url,
@@ -55,12 +53,18 @@ jQuery(document).ready(function(){
 
               success: function(response) {
                 console.log(response);
-                alertify.success("Canvis Guardats Correctament!!!");
+                if (response == true){
+                   alertify.success("Canvis Guardats Correctament!!!");
+                   jQuery('.progress_bd').css('display', 'none');
+                }else {
+                   alertify.error("Hi ha hagut algun error, revisa els parametres de configuració!!!");
+                }
+
               },
               error: function(response){
-                  console.log(response);
+                  //console.log(response);
               }
           });
-          */
+
     });
 });

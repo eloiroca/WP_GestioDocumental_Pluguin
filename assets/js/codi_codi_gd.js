@@ -1,5 +1,7 @@
 jQuery(document).ready(function(){
-
+    jQuery(window).scroll(function() {
+        jQuery('.btn_guardarFitxers').css({'position' : 'fixed', 'right' : '0'});
+    });
     jQuery('.btn_guardarFitxers').click(function() {
 
         editor.save();
