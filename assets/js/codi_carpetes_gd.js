@@ -8,17 +8,34 @@ jQuery(document).ready(function(){
       var parametre_fitxers_per_fila =  jQuery("#fitxersFila").val();
       var parametre_estat_moduls = {};
 
+
       if(jQuery("#documental").is(':checked')){ parametre_estat_moduls["GestioDocumental"] = true;}else{parametre_estat_moduls["GestioDocumental"] = false;}
       if(jQuery("#contrasenyes").is(':checked')){ parametre_estat_moduls["GestioContrasenyes"] = true;}else{parametre_estat_moduls["GestioContrasenyes"] = false;}
       if(jQuery("#codi").is(':checked')){ parametre_estat_moduls["GestioCodi"] = true;}else{parametre_estat_moduls["GestioCodi"] = false;}
       if(jQuery("#backups").is(':checked')){ parametre_estat_moduls["GestioBackups"] = true;}else{parametre_estat_moduls["GestioBackups"] = false;}
 
-      var data = {'action': 'guardarParametresBD',
-                    'valorParametreRuta' : parametre_ruta_arrel_carpetes,
-                    'valorParametreFitxersPerFila' : parametre_fitxers_per_fila,
-                    'valorParametreEstatModuls': parametre_estat_moduls
-                  }
-                  
+      //if(jQuery("#backups").is(':checked')){
+        var data = {'action': 'guardarParametresBD',
+                      'valorParametreRuta' : parametre_ruta_arrel_carpetes,
+                      'valorParametreFitxersPerFila' : parametre_fitxers_per_fila,
+                      'valorParametreEstatModuls': parametre_estat_moduls,
+                      'valorParametreSqlOrigen' : jQuery("#origenSQLBackup").val(),
+                      'valorParametreSqlDesti' : jQuery("#destiSQLBackup").val(),
+                      'valorParametreCodiOrigen' : jQuery("#origenCodiBackup").val(),
+                      'valorParametreCodiDesti' : jQuery("#destiCodiBackup").val()
+                    }
+                    console.log(data);
+
+      /*}else{
+        var data = {'action': 'guardarParametresBD',
+                      'valorParametreRuta' : parametre_ruta_arrel_carpetes,
+                      'valorParametreFitxersPerFila' : parametre_fitxers_per_fila,
+                      'valorParametreEstatModuls': parametre_estat_moduls
+                    }
+      }*/
+
+
+
       jQuery.ajax({
             type : "post",
             url : ajax_object.ajax_url,
@@ -254,7 +271,7 @@ function actualitzarEventsJS(){
     jQuery('.filtrar').keyup(function () {
 
 	        var rex = new RegExp(jQuery(this).val(), 'i');
-
+          
 	        jQuery('.td_taula_documents').hide();
 	        jQuery('.td_taula_documents').filter(function () {
 	            return rex.test(jQuery(this).text());

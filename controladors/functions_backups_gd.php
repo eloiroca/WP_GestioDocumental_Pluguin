@@ -119,11 +119,26 @@
       }
     }
 
+    add_action( 'wp_ajax_guardarFitxerCodi_backup', 'guardarFitxerCodi_backup' );
+    function guardarFitxerCodi_backup(){
+        echo "string";
+        $origen = obtenirParametreCodiOrigenBackupDefecte();
+        $desti = obtenirParametreCodiDestiBackupDefecte().'\codi.php';
+
+        echo $origen;
+        echo $desti;
+        if (!copy($origen, $desti)) {
+            echo "Error al copiar $fichero...\n";
+        }
+
+    }
     function obtenirUltimaCopia($var){
       if ($var == 'sql') {
-          echo date("d F Y H:i:s",filemtime(obtenirParametreTaulesDestiDefecte()));
+          $data = strtotime('+2 hour', strtotime(date("d F Y H:i:s",filemtime(obtenirParametreTaulesDestiDefecte()))));
+          echo date("d F Y H:i:s", $data);
       }elseif ($var == 'codi') {
-          echo date("d F Y H:i:s",filemtime(obtenirParametreCodiDestiBackupDefecte()));
+          $data = strtotime('+2 hour', strtotime(date("d F Y H:i:s",filemtime(obtenirParametreCodiDestiBackupDefecte().'\codi.php'))));
+          echo date("d F Y H:i:s", $data);
       }
 
     }

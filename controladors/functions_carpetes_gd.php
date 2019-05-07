@@ -6,6 +6,12 @@
       $valorParametreRuta = $_POST['valorParametreRuta'];
       $valorParametreFitxersFila = $_POST['valorParametreFitxersPerFila'];
       $valorEstatsModuls = $_POST['valorParametreEstatModuls'];
+      $valorParametreSqlOrigen = $_POST['valorParametreSqlOrigen'];
+      $valorParametreSqlDesti = $_POST['valorParametreSqlDesti'];
+      $valorParametreCodiOrigen = $_POST['valorParametreCodiOrigen'];
+      $valorParametreCodiDesti = $_POST['valorParametreCodiDesti'];
+
+
       global $wpdb;
 
       $wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorParametreFitxersFila."' where nom = 'parametre_mostrar_fitxers_per_fila'");
@@ -13,6 +19,10 @@
       $wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorEstatsModuls['GestioContrasenyes']."' where nom = 'parametre_estat_modul_GestioContrasenyes'");
       $wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorEstatsModuls['GestioCodi']."' where nom = 'parametre_estat_modul_GestioCodi'");
       $wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorEstatsModuls['GestioBackups']."' where nom = 'parametre_estat_modul_GestioBackups'");
+      if ($valorParametreSqlOrigen!=''){$wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorParametreSqlOrigen."' where nom = 'parametre_SqlOrigen_backup'");}
+      if ($valorParametreSqlDesti!=''){$wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorParametreSqlDesti."' where nom = 'parametre_SqlDesti_backup'");}
+      if ($valorParametreCodiOrigen!=''){$wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorParametreCodiOrigen."' where nom = 'parametre_CodiOrigen_backup'");}
+      if ($valorParametreCodiDesti!=''){$wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorParametreCodiDesti."' where nom = 'parametre_CodiDesti_backup'");}
 
       if (is_dir($valorParametreRuta)){
         //Ens connectem a la base de dades i guardem el parametre.
@@ -22,7 +32,6 @@
         $wpdb->get_results("update gd_pluguin_parametres set valor = '.' where nom = 'parametre_ruta_arrel_carpetes'");
         echo false;
       }
-      //print_r($_POST['valorParametreEstatModuls']);
     	wp_die();
     }
 
@@ -507,7 +516,7 @@ function pintarCosPluguinPaginaFinal() {
           $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
           $actual_link_explode2 = explode('/', $actual_link);
           $actual_link_explode3 = explode('/?', $actual_link);
-          $actual_link_explode3 = substr($actual_link_explode3[1], 0, 2);
+          $actual_link_explode3 = substr($actual_link_explode3[0], 0, 2);
 
           if (!in_array("category", $actual_link_explode2) && $actual_link_explode3 != 's=') {
               include plugin_dir_path( __DIR__ ).'views/vista_carpetes_pagina_Final_gd.php';

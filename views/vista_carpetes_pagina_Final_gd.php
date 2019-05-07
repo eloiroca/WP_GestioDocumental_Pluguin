@@ -1,4 +1,7 @@
 <div class="gridContainerCarpetes">
+
+      <?php echo "<br><p class='versioAplicacio'>Versió ". obtenirVersio(); ?>
+      <div class='cos-carpetes'><?php echo crear_cos_pluguin($carpetaAssignada, 'ocultar_tirarEndarrera_true'); ?></div>
       <div id="parametres_pluguins">
         <p class="titol_parametres">Aquesta pàgina està assignada a una carpeta </p>
         <button type="button" name="button" class="btn btn-primary btn_navegaciofitxers btn_infoFitxersAssignacio" data_idPagina="<?php echo $idPagina ?>" data_ruta="<?php echo $carpetaAssignada; ?>"><img class="imgOpcions" src='<?php echo plugins_url( 'gestiodocumentalpluguin/assets/img/icono-info.png'); ?>'></button>
@@ -6,8 +9,6 @@
         <button type="button" name="button" class="btn btn-danger btn_navegaciofitxers btn_eliminarAssignacio" data_ruta="<?php echo $carpetaAssignada; ?>"><img class="imgOpcions" src='<?php echo plugins_url( 'gestiodocumentalpluguin/assets/img/icono-eliminar-assignacio.png'); ?>'></button>
 
       </div>
-      <?php echo "<br><p class='versioAplicacio'>Versió ". obtenirVersio(); ?>
-      <div class='cos-carpetes'><?php echo crear_cos_pluguin($carpetaAssignada, 'ocultar_tirarEndarrera_true'); ?></div>
 </div>
       <script>
           var id_pagina = recuperarIdPagina();

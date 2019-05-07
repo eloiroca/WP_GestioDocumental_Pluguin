@@ -72,7 +72,12 @@
 
                   <ul style="margin-left: 15px; margin-top:10px;"><li class="li_boleta">Fitxers per fila</li></ul>
                   <div class='count-input space-bottom'> <a class='incr-btn' data-action='decrease' href='#'>–</a> <input id="fitxersFila" class='quantity' type='number' readonly name='quantity' value='<?php echo obtenirParametreFitxersPerFila(); ?>'/> <a class='incr-btn' data-action='increase' href='#'>&plus;</a> </div>
-                  //Permetre la vista de carpetes encara que l'usuari no estigui loggejat
+                  <ul style="margin-left: 15px;">
+                    <li class="li_boleta">Habilitar Gestio Carpetes sense Loggejar-se
+                      <input class="check_bonic" type="checkbox" id="backups" name="modul_backups" value="GestioBackups">
+                      <label for="backups"></label>
+                    </li>
+                  </ul>
                 </div>
                <?php } ?>
 
@@ -81,7 +86,14 @@
                   <div id="parametres_pluguins">
   										<p class="titol_parametres">Paràmetres Gestió Contrasenyes</p>
   								</div>
-                  //Permetre la vista de contrasenyes encara que l'usuari no estigui loggejat
+                  <ul style="margin-left: 15px;">
+                    <li class="li_boleta">Habilitar Gestio Contrasenya sense Loggejar-se
+                      <input class="check_bonic" type="checkbox" id="backups" name="modul_backups" value="GestioBackups">
+                      <label for="backups"></label>
+                    </li>
+                  </ul>
+
+
 								</div>
               <?php } ?>
               <?php if (estat_modul("GestioBackups")=="true"){ ?>
@@ -107,16 +119,16 @@
                       <div id="backups_tipus">
                           <p class="titol_backups">Backup Arxiu Gestio Codi</p>
                       </div>
-                      <p><i>Origen: <span class="info_dades_backups"><input id="origenSQLBackup" type="text" class="form-control input_form" style="border: 1px solid black !important;" placeholder="Ruta per defecte ..." value="<?php echo obtenirParametreCodiOrigenBackupDefecte(); ?>"/></span></i></p>
-                      <p><i>Desti: <span class="info_dades_backups"></span><input id="destiSQLBackup" type="text" class="form-control input_form" style="border: 1px solid black !important;" placeholder="Ruta per defecte ..." value="<?php echo obtenirParametreCodiDestiBackupDefecte(); ?>"/></i></p>
+                      <p><i>Origen: <span class="info_dades_backups"><input id="origenCodiBackup" type="text" class="form-control input_form" style="border: 1px solid black !important;" placeholder="Ruta per defecte ..." value="<?php echo obtenirParametreCodiOrigenBackupDefecte(); ?>"/></span></i></p>
+                      <p><i>Desti: <span class="info_dades_backups"></span><input id="destiCodiBackup" type="text" class="form-control input_form" style="border: 1px solid black !important;" placeholder="Ruta per defecte ..." value="<?php echo obtenirParametreCodiDestiBackupDefecte(); ?>"/></i></p>
 
                     </div>
                     <div class="col-md-4">
                       <div id="backups_tipus">
                           <p class="titol_backups">Backup PC Eloi</p>
                       </div>
-                      <p><i>Origen: <span class="info_dades_backups"><input id="origenSQLBackup" type="text" class="form-control input_form" style="border: 1px solid black !important;" placeholder="Ruta per defecte ..." value="<?php echo obtenirParametreTaulesDefecte(); ?>"/></span></i></p>
-                      <p><i>Desti: <span class="info_dades_backups"></span><input id="destiSQLBackup" type="text" class="form-control input_form" style="border: 1px solid black !important;" placeholder="Ruta per defecte ..." value="<?php echo obtenirParametreTaulesDestiDefecte(); ?>"/></i></p>
+                      <p><i>Origen: <span class="info_dades_backups"><input id="origenSQLBackup" type="text" class="form-control input_form" style="border: 1px solid black !important;" placeholder="Ruta per defecte ..." value=""/></span></i></p>
+                      <p><i>Desti: <span class="info_dades_backups"></span><input id="destiSQLBackup" type="text" class="form-control input_form" style="border: 1px solid black !important;" placeholder="Ruta per defecte ..." value=""/></i></p>
                     </div>
                   </div>
 
