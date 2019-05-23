@@ -20,8 +20,8 @@
                       <div class='col-md-2 td_assignacio_info'>".$contrasenyes[$i]->descripcio."</div>
                       <div class='col-md-2 td_assignacio_info user_camp'>".$contrasenyes[$i]->usuari."</div>
                       <div class='col-md-2 td_assignacio_info user_camp'>".$contrasenyes[$i]->contrasenya."</div>
-                      <div class='col-md-1 td_assignacio_info'><a class='href_contrasenya' href=".$contrasenyes[$i]->url." target='_blank'><img class='img_web' src=".plugins_url( 'gestiodocumentalpluguin/assets/img/icono-web.png' )."></a></div>
-                      <div class='col-md-3 td_assignacio_info'>".$contrasenyes[$i]->comentari."</div>
+                      <div class='col-md-2 td_assignacio_info'><a class='href_contrasenya' href=".$contrasenyes[$i]->url." target='_blank'><img class='img_web' src=".plugins_url( 'gestiodocumentalpluguin/assets/img/icono-web.png' )."></a><img class='img_web href_dns' url='".$contrasenyes[$i]->url."' src=".plugins_url( 'gestiodocumentalpluguin/assets/img/icono-dns.png' )."></div>
+                      <div class='col-md-2 td_assignacio_info'>".$contrasenyes[$i]->comentari."</div>
                       <div class='col-md-1 td_assignacio_info'>
                           <button type='button' name='button' class='btn btn-warning btn_fitxers btn_modificarContrasenya' data_id=".$contrasenyes[$i]->id."><img class='imgOpcions_contra mida_contra' src=".plugins_url( 'gestiodocumentalpluguin/assets/img/icono-renombrar.png')."></button>
                           <button type='button' name='button' class='btn btn-danger btn_fitxers btn_eliminarContrasenya' data_id=".$contrasenyes[$i]->id."><img class='imgOpcions_contra mida_contra' src=".plugins_url( 'gestiodocumentalpluguin/assets/img/icono-eliminar.png')."></button>
@@ -37,6 +37,27 @@
         global $wpdb;
         $wpdb->get_results( "insert into gd_pluguin_contrasenyes (tipo_contrasenya, descripcio, usuari, contrasenya, url, comentari) values ('".$_POST['valorTipus']."','".$_POST['valorDescripcio']."','".$_POST['valorUsuari']."','".$_POST['valorContrasenya']."','".$_POST['valorUrl']."','".$_POST['valorComentari']."')" );
     }
+    //Funcio que mirara quina dns te la URL
+    add_action( 'wp_ajax_preguntarDNS', 'preguntarDNS' );
+    function preguntarDNS(){
+      $domini = $_POST['valorUrl'];
+      $ip = "";
+      if ($domini == '#'){
+          $ip = "No es pot consultar perque no hi ha URL d'aquesta contrasenya";
+      }else {
+          $domini = explode("/", $domini);
+          $dns = dns_get_record($domini[2]);
+
+          for ($i=0; $i<count($dns);$i++){
+              $ip = $dns[$i]['ip'];
+          }
+          if ($ip == ""){
+              $ip = "No hi ha entrada IP";
+          }
+      }
+      echo $ip;
+    }
+
     //Funcio que eliminara una contrasenya
     add_action( 'wp_ajax_eliminarContrasenya', 'eliminarContrasenya' );
     function eliminarContrasenya(){
@@ -61,6 +82,8 @@
         $contrasenyes = $wpdb->get_results( "update gd_pluguin_contrasenyes set tipo_contrasenya='".$_POST['valorTipus']."', usuari='".$_POST['valorUsuari']."', contrasenya='".$_POST['valorContrasenya']."', descripcio='".$_POST['valorDescripcio']."', url='".$_POST['valorUrl']."', comentari='".$_POST['valorComentari']."' where id=".$_POST['valorContrasenyaId']);
 
     }
+
+
 
 
 ?>

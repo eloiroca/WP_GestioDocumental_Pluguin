@@ -27,8 +27,8 @@
                  <div class="col-md-2">Descripció</div>
                  <div class="col-md-2">Usuari</div>
                  <div class="col-md-2">Contrasenya</div>
-                 <div class="col-md-1">URL</div>
-                 <div class="col-md-3">Comentari</div>
+                 <div class="col-md-2">URL</div>
+                 <div class="col-md-2">Comentari</div>
                  <div class="col-md-1"><button type='button' name='button' class='btn btn-success btn_fitxers btn_afegirContrasenya'><img class='imgOpcions_contra' src="<?php echo plugins_url( 'gestiodocumentalpluguin/assets/img/icono-afegirContra.png') ?>"></button></div>
                </div>
                <div class="contrasenya_vista_previa">

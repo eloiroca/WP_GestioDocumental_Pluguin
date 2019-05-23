@@ -9,6 +9,29 @@ jQuery(document).ready(function(){
          'alignItems' : 'center'
       });
   });
+  jQuery('.href_dns').click(function() {
+    var data = {'action': 'preguntarDNS',
+            'valorUrl' : jQuery(this).attr('url')
+          }
+    jQuery.ajax({
+          type : "post",
+          url : ajax_object.ajax_url,
+          data : data,
+          success: function(response) {
+              response = response.slice(0, -1)
+              Swal.fire({
+                title: '<strong>DNS Actual</strong>',
+                type: 'info',
+                html: '<b>'+ response + '</b>'
+              })
+          },
+          error: function(response){
+              console.log(response);
+          }
+      });
+
+  });
+
 //Event al enviar la contrasenya
 jQuery('.btn_enviarContrasenya').click(function() {
     var usuari = jQuery( "[name='nom_usuari']" ).val();
