@@ -15,7 +15,6 @@
              <div class="row">
                <div class="col-md-12 panell_opcions">
                   <button type="button" name="button" class="btn btn-primary btn_navegaciofitxers btn_guardarFitxers float-right"><img class="imgOpcions" src='<?php echo plugins_url( 'gestiodocumentalpluguin/assets/img/icono-guardar.png'); ?>'></button>
-
                </div>
                <hr class="separador">
              </div>
@@ -24,8 +23,6 @@
                <form id='formulari_codi' action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="POST">
                   <textarea name="codi" id="myTextarea"><?php	$archivo = plugin_dir_path( __DIR__ ).'/assets/php/codi.php';	$abrir = fopen($archivo, "r"); $contenido = fread($abrir, filesize($archivo)); fclose($abrir); echo $contenido;?></textarea>
             	 </form>
-
-
              </div>
            </div>
 				</div>

@@ -17,6 +17,15 @@
     <div id="contenedor_del_cos" class="col-md-12">
         <div id="cos_primerPerfil" class="panel panel-primary cos_primerPerfil_marges contra_taules">
            <div class="panell_contrasenyes">
+             <div class="row col-md-12 panell_opcions">
+                <div class="col-md-4">
+                    <span class="span_ping"><img class="img_buscar" src='<?php echo plugins_url( 'gestiodocumentalpluguin/assets/img/icono-ping.png');?>'>Ping</span>
+                </div>
+                <div class="col-md-4">
+                    <div class='div_contador_contrasenyes'><span class="span_cuantitat_contrassenyes"><?php echo obtenirContrasenyesTotals();?></span></div>
+                </div>
+
+             </div>
              <div class="col-md-12 panell_opcions"><img class="img_buscar" src='<?php echo plugins_url( 'gestiodocumentalpluguin/assets/img/icono-buscar.png');?>'>
              <input id="filtre_contrasenyes" class="filtrar_contrasenya" type="text" class="form-control" placeholder="Cerca contrasenyes, utlitza el caracter \ per buscar més informació ..."/>
              <img class="img_buscar" src='<?php echo plugins_url( 'gestiodocumentalpluguin/assets/img/icono-buscar.png'); ?>'></div>

@@ -30,6 +30,12 @@
         }
         return $td;
     }
+    //Funcio que retornara el numero de contrasenyes que tenim a la BD
+    function obtenirContrasenyesTotals(){
+        global $wpdb;
+        $numContrasenyes = $wpdb->get_row( "select count(id) numIds from gd_pluguin_contrasenyes" );
+        echo "Nº ".$numContrasenyes->numIds;
+    }
 
     //Funcio que creara una contrasenya nova
     add_action( 'wp_ajax_crearContrasenya', 'crearContrasenya' );

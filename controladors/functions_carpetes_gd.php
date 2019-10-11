@@ -10,6 +10,9 @@
       $valorParametreSqlDesti = $_POST['valorParametreSqlDesti'];
       $valorParametreCodiOrigen = $_POST['valorParametreCodiOrigen'];
       $valorParametreCodiDesti = $_POST['valorParametreCodiDesti'];
+      $valorParametreConfigGesta = $_POST['valorParametreConfigGesta'];
+      $valorParametreServerGesta = $_POST['valorParametreServerGesta'];
+      $valorParametreBDGesta = $_POST['valorParametreBDGesta'];
 
 
       global $wpdb;
@@ -19,10 +22,13 @@
       $wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorEstatsModuls['GestioContrasenyes']."' where nom = 'parametre_estat_modul_GestioContrasenyes'");
       $wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorEstatsModuls['GestioCodi']."' where nom = 'parametre_estat_modul_GestioCodi'");
       $wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorEstatsModuls['GestioBackups']."' where nom = 'parametre_estat_modul_GestioBackups'");
+      $wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorParametreConfigGesta."' where nom = 'parametre_GestaConfig_fitxer'");
       if ($valorParametreSqlOrigen!=''){$wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorParametreSqlOrigen."' where nom = 'parametre_SqlOrigen_backup'");}
       if ($valorParametreSqlDesti!=''){$wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorParametreSqlDesti."' where nom = 'parametre_SqlDesti_backup'");}
       if ($valorParametreCodiOrigen!=''){$wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorParametreCodiOrigen."' where nom = 'parametre_CodiOrigen_backup'");}
       if ($valorParametreCodiDesti!=''){$wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorParametreCodiDesti."' where nom = 'parametre_CodiDesti_backup'");}
+
+      editar_fitxer_gesta('modificar_servidor',$valorParametreServerGesta, $valorParametreBDGesta);
 
       if (is_dir($valorParametreRuta)){
         //Ens connectem a la base de dades i guardem el parametre.
@@ -33,8 +39,55 @@
         echo false;
       }
     	wp_die();
-    }
 
+    }
+    function editar_fitxer_gesta($accio,$valorParametreServerGesta,$valorParametreBDGesta){
+      $xml = new DomDocument();
+      $xml->preserveWhitespace = false;
+      $xml->load($fitxerConfig);
+      $xpath = new DOMXPath($xml);
+
+      $fitxerConfig = obtenirParametreGestaDefecte();
+      $ServidorActualGesta = obtenirDadesFitxerConfig('obtenirServidorGestaActual');
+      $BDActualGesta = obtenirDadesFitxerConfig('obtenirBDGestaActual');
+
+      if ($accio=='modificar_servidor') {
+          //Creem l'element Server
+          $add = $xpath->query('/configuration/appSettings/add[@key="Server"]')->item(1);
+          $gservidor = $xml->createElement('add');
+          $key = $xml->createAttribute('key');
+          $key->value = 'Server';
+          $value = $xml->createAttribute('value');
+
+          $value->value = stripslashes($valorParametreServerGesta);
+          $gservidor->appendChild($key);
+          $gservidor->appendChild($value);
+          //Inserim el nou
+          $add->parentNode->insertBefore($gservidor, $add->nextSibling);
+          //Eliminem el vell
+          $entry = $xpath->query('/configuration/appSettings/add[@value="'.$valorParametreServerGesta.'"]')->item(0);
+          // remove selected element
+          $entry->parentNode->removeChild($entry);
+      }elseif ($accio=='modificar_bd') {
+          //Creem l'element BaseDeDades
+          $add = $xpath->query('/configuration/appSettings/add[@key="BaseDeDades"]')->item(4);
+          $basededades = $xml->createElement('add');
+          $key = $xml->createAttribute('key');
+          $key->value = 'BaseDeDades';
+          $value = $xml->createAttribute('value');
+          $value->value = $valorParametreBDGesta;
+          $basededades->appendChild($key);
+          $basededades->appendChild($value);
+
+          //Inserim el nou
+          //$add->parentNode->insertBefore($basededades, $add->nextSibling);
+          //Eliminem el vell
+          //$entry = $xpath->query('/configuration/appSettings/add[@value="'.$valorParametreBDGesta.'"]')->item(0);
+          // remove selected element
+          //$entry->parentNode->removeChild($entry);
+      }
+      $xml->save($fitxerConfig);
+    }
     add_action( 'wp_function_comprobar_dadesPerDefecte', 'comprobar_dadesPerDefecte' );
     //ComprobacioDadesPerDefecte
     function comprobar_dadesPerDefecte($versio){
@@ -61,6 +114,7 @@
           $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_SqlDesti_backup','C:\\\Users\\\Eloi\\\Desktop\\\Backups GD\\\Base de Dades')" );
           $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_CodiOrigen_backup','".str_replace('\\', '/', plugin_dir_path( __DIR__ )).'assets/php/codi.php'."')" );
           $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_CodiDesti_backup','C:\\\Users\\\Eloi\\\Desktop\\\Backups GD\\\Codi')" );
+          $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_GestaConfig_fitxer','C:\\\Users\\\Eloi\\\Desktop\\\Gesta Local\\\Gesta.exe.config')" );
 
 
       }
@@ -84,6 +138,16 @@
         mkdir($ruta_on_crearCarpeta."/".$nom_fitxer, 0700);
     }
 
+    //Funcio que farà ping a una adreça
+
+    add_action( 'wp_ajax_fePingAdreca', 'fePingAdreca' );
+    function fePingAdreca() {
+        $direccio = $_POST['valordireccio'];
+        $comando = "ping ".$direccio." -n 1";
+
+        $output = shell_exec($comando);
+        echo $output;
+    }
     //Funcio per entrar en una carpeta seleccionada
     add_action( 'wp_ajax_entrarCarpetaSeleccionada', 'entrarCarpetaSeleccionada' );
     function entrarCarpetaSeleccionada() {
@@ -309,6 +373,11 @@
     function obtenirParametreCodiDestiBackupDefecte(){
         global $wpdb;
         $valorParametre = $wpdb->get_row( "select valor from gd_pluguin_parametres where nom='parametre_CodiDesti_backup'" );
+        return $valorParametre->valor;
+    }
+    function obtenirParametreGestaDefecte(){
+        global $wpdb;
+        $valorParametre = $wpdb->get_row( "select valor from gd_pluguin_parametres where nom='parametre_GestaConfig_fitxer'" );
         return $valorParametre->valor;
     }
 
@@ -574,4 +643,51 @@ function estat_modul($nomModul){
     $estat = $wpdb->get_row( "select valor from gd_pluguin_parametres where nom = 'parametre_estat_modul_".$nomModul."'");
     return $estat->valor;
 }
+//Funcio que llegira el fitxer de configuracó del Gesta
+function obtenirDadesFitxerConfig($tipus){
+  $fitxerConfig = obtenirParametreGestaDefecte();
+
+  $xml = simplexml_load_file($fitxerConfig);
+
+  $arrayServers = array();
+  $arrayBD = array();
+
+
+  if($tipus=='Server'){
+    foreach($xml->appSettings->children() as $parametre) {
+      if ($parametre['key'] == 'Server'){
+        array_push($arrayServers,$parametre['value']);
+      }
+    }
+
+    for ($i=count($arrayServers)-1; $i>=0; $i--) {
+        echo '<option value="'.$arrayServers[$i].'">'.$arrayServers[$i].'</option>';
+    }
+  }else if($tipus=='BD'){
+    foreach($xml->appSettings->children() as $parametre) {
+      if ($parametre['key'] == 'BaseDeDades'){
+        array_push($arrayBD,$parametre['value']);
+      }
+    }
+    for ($i=count($arrayBD)-1; $i>=0; $i--) {
+        echo '<option value="'.$arrayBD[$i].'">'.$arrayBD[$i].'</option>';
+    }
+  }else if ($tipus=='obtenirServidorGestaActual') {
+      foreach($xml->appSettings->children() as $parametre) {
+        if ($parametre['key'] == 'Server'){
+          array_push($arrayServers,$parametre['value']);
+        }
+      }
+      return end($arrayServers);
+  }else if ($tipus=='obtenirBDGestaActual') {
+      foreach($xml->appSettings->children() as $parametre) {
+        if ($parametre['key'] == 'BaseDeDades'){
+          array_push($arrayBD,$parametre['value']);
+        }
+      }
+      return end($arrayBD);
+  }
+
+}
+
 ?>

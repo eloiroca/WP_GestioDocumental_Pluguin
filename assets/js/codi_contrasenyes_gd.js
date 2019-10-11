@@ -192,6 +192,49 @@ jQuery('.btn_enviarContrasenya').click(function() {
     jQuery('.td_assignacio_info').click(function () {
         copiarAlPortapapers(jQuery(this));
     });
+    //Event que fara que fagi ping a una IP o nom de domini
+    jQuery('.span_ping').click(function(){
+      Swal.fire({
+          title: 'IP o Domini per fer ping:',
+          input: 'text',
+          showCancelButton: true,
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Cancel·lar',
+          confirmButtonText: 'Enviar',
+          confirmButtonColor: '#28B463',
+          showLoaderOnConfirm: true,
+          allowOutsideClick: () => !Swal.isLoading()
+          }).then((result) => {
+          if (result.value) {
+            var direccio = result.value;
+
+            var data = {'action': 'fePingAdreca',
+                    'valordireccio' : direccio
+                  }
+            jQuery.ajax({
+                  type : "post",
+                  url : ajax_object.ajax_url,
+                  data : data,
+                  success: function(response) {
+                    response = response.slice(0, -1);
+
+                    console.log(response);
+                    Swal.fire({
+                      title: '<strong>Resultat Ping</strong>',
+                      type: 'info',
+                      html: '<i>'+ response + '</i>'
+                    })
+                  },
+                  error: function(response){
+                      console.log(response);
+                  }
+              });
+          }
+          })
+
+
+
+    });
 });
 
 function copiarAlPortapapers(elemento) {

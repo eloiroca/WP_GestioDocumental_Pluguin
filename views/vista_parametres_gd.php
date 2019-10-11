@@ -139,6 +139,51 @@
 
 
               <?php } ?>
+              <div id="opcions_parametres">
+                <div id="parametres_pluguins">
+                    <p class="titol_parametres">Paràmetres Gesta Config</p>
+                </div>
+
+                <br>
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <div id="backups_tipus">
+                        <p class="titol_backups">Fitxer de Configuració</p>
+                    </div>
+                    <div class="dades_backups">
+                    <p><i><input id="inputGestaConfig" type="text" class="form-control input_form" style="border: 1px solid black !important; " placeholder="Ruta per defecte ..." value="<?php echo obtenirParametreGestaDefecte(); ?>"/></span></i></p>
+
+
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div id="backups_tipus">
+                        <p class="titol_backups">Servidor Actual</p>
+                    </div>
+                    <div class="dades_backups">
+                      <select id="selectGestaServer" name="carlist" form="carform" class="form-control form-control-lg"  style="border: 1px solid black !important;font-size: 15px !important;height:37px !important;text-align:center;">
+                         <?php echo obtenirDadesFitxerConfig('Server') ?>
+                       </select>
+                     </div>
+
+                  </div>
+
+                  <div class="col-md-4">
+                    <div id="backups_tipus">
+                        <p class="titol_backups">Base de Dades Actual</p>
+                    </div>
+                    <div class="dades_backups">
+                      <select id="selectGestaBD" name="aaa" form="carform" class="form-control form-control-lg" style="border: 1px solid black !important;font-size: 15px !important;height:37px !important;text-align:center;">
+                         <?php echo obtenirDadesFitxerConfig('BD') ?>
+                       </select>
+
+                     </div>
+                  </div>
+                </div>
+              </div>
+
+
                 <div class="panel-peu">
                     <button type="button" name="button" class="btn btn-success btn_guardarParametres">Guardar Canvis</button>
                 </div>

@@ -6,6 +6,9 @@ jQuery(document).ready(function(){
   jQuery('.btn_guardarParametres').click(function() {
       var parametre_ruta_arrel_carpetes = jQuery("#rutaCarpetes").val();
       var parametre_fitxers_per_fila =  jQuery("#fitxersFila").val();
+      var parametre_ruta_gesta_config = jQuery("#inputGestaConfig").val();
+      var parametre_server_gesta_config = jQuery("#selectGestaServer").val();
+      var parametre_bd_gesta_config = jQuery("#selectGestaBD").val();
       var parametre_estat_moduls = {};
 
 
@@ -22,7 +25,10 @@ jQuery(document).ready(function(){
                       'valorParametreSqlOrigen' : jQuery("#origenSQLBackup").val(),
                       'valorParametreSqlDesti' : jQuery("#destiSQLBackup").val(),
                       'valorParametreCodiOrigen' : jQuery("#origenCodiBackup").val(),
-                      'valorParametreCodiDesti' : jQuery("#destiCodiBackup").val()
+                      'valorParametreCodiDesti' : jQuery("#destiCodiBackup").val(),
+                      'valorParametreConfigGesta' : parametre_ruta_gesta_config,
+                      'valorParametreServerGesta' : parametre_server_gesta_config,
+                      'valorParametreBDGesta' : parametre_bd_gesta_config
                     }
                     console.log(data);
 
@@ -271,7 +277,7 @@ function actualitzarEventsJS(){
     jQuery('.filtrar').keyup(function () {
 
 	        var rex = new RegExp(jQuery(this).val(), 'i');
-          
+
 	        jQuery('.td_taula_documents').hide();
 	        jQuery('.td_taula_documents').filter(function () {
 	            return rex.test(jQuery(this).text());

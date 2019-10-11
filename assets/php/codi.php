@@ -175,10 +175,32 @@ function scripts_css_compsaonline() {
 			*/
         )
     );
-
+	
 }
 
 add_action( 'wp_enqueue_scripts', 'scripts_css_compsaonline' );
+
+//Metode dos
+function load_my_script(){
+    wp_register_script( 
+        'compsaonlinejs', 
+        get_template_directory_uri() . '/js/compsaonline.js', 
+        array( 'jquery' )
+    );
+    wp_enqueue_script( 'compsaonlinejs' );
+	wp_register_style( 'fontAwesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' );
+	wp_enqueue_style( 'fontAwesome' );
+	wp_register_script('selectelement', 'https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/noframework.waypoints.min.js');
+	wp_enqueue_script( 'selectelement' );
+}
+add_action('wp_enqueue_scripts', 'load_my_script');
+wp_enqueue_style('compsaonline','/wp-content/themes/kallyas/css/compsaonline.css');
+
+/***************************ELIMINAR REDIMENCIONAR FOTOS**************************************/
+function remove_image_sizes( $sizes, $metadata ) {
+    return [];
+}
+add_filter( 'intermediate_image_sizes_advanced', 'remove_image_sizes', 10, 2 );
 
 /*******************************ALTERNAR BANERS POP UP****************************************/
 // S'ha de crear un pop up amb una imatge i tot normal
@@ -216,4 +238,121 @@ function my_override_checkout_fields( $fields ) {
 		print_r($fields);
 		echo "</pre>";*/ 
      return $fields;
+}
+
+/*****************************JS SCROLL CONTROLLER*********************************************/
+//Depen de la següent llibreria:
+wp_register_script('selectelement', 'https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/noframework.waypoints.min.js');
+wp_enqueue_script( 'selectelement' );
+
+const waypoints = [
+	{
+		id: 'toptotal',
+		handler(direction) {
+			treureRalletaMenus();
+			console.log('ep');
+		}
+	}
+];
+
+waypoints.forEach(({ id, handler }) => (
+	new Waypoint({
+		element: document.getElementById(id),
+		handler,
+		offset: 200 // añade un margen superior opcional
+	})
+));
+/******************************DETECTAR PANTALLA MOBIL O PC*********************************/
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+   console.log('Esto es un dispositivo móvil');
+   jQuery('.slider_pc').css('display','none');
+}else{
+   console.log('Esto es un PC');
+   jQuery('.slider_mobil').css('display','none');
+}
+/******************************CAPTURA PANTALLA DE UNA WEB URL I FICAR-LA COM A THUMBNAIL***/
+
+function crear_entrades_automatiques(){
+    
+    define('UPLOAD_DIR', get_template_directory().'/compsaonline/');
+	//Mirem quants posts tenim
+	global $wpdb;
+	
+	//$post_sense_imatge = array('163');
+	
+	
+	
+	//for ($i=0;$i<count($post_sense_imatge);$i++){
+		$posts = $wpdb->get_results( "SELECT * FROM `wp_posts` INNER JOIN `co26435_term_relationships` ON wp_posts.ID = co26435_term_relationships.object_id where wp_posts.post_status='publish' and wp_posts.post_type='post' and co26435_term_relationships.term_taxonomy_id = 2 and wp_posts.ID=17684");	
+		foreach ($posts as $post) {
+		
+		//A cada post li fiquem el thumbnail corresponent
+		
+		    $contingut = $post->post_content;
+			
+			$contingut = strval($contingut);
+			$contignut = '';
+			
+			$contingut_arr = explode(" ",$contingut);
+			
+			$url_arr = explode(">",end($contingut_arr));
+			
+			$url = $url_arr[1];
+			
+			$url =str_replace("<a", "", $url);
+			$url =str_replace("</div", "", $url);
+			$url =str_replace("</span", "", $url);
+			$url =str_replace("</a", "", $url);
+			$url =str_replace("http://www.", "", $url);
+			$url =str_replace("https://www.", "", $url);
+			$url =str_replace("https://", "", $url);
+			$url =str_replace("http://", "", $url);
+			$url =str_replace("/", "", $url);
+			$url =str_replace("www.", "", $url);
+			echo $url;
+			
+			$screenshot = 'http://api.webthumbnail.org/?width=1200&height=800&format=jpg&url='.$url;
+			
+			
+			//Guardem la imatge al servidor
+			$file = UPLOAD_DIR .'imatge.png';
+			$content = file_get_contents($screenshot);
+			file_put_contents($file, $content);
+			
+			echo "<img src=".$screenshot."/>";
+			
+			
+			
+			//La pujem al wordpress de manera que obrtindrem el ID
+			$filename = 'imatge.png';
+				$upload_file = wp_upload_bits( $filename, null, @file_get_contents( $file ) );
+				if ( ! $upload_file['error'] ) {
+					// if succesfull insert the new file into the media library (create a new attachment post type).
+					$wp_filetype = wp_check_filetype($filename, null );
+
+					$attachment = array(
+						'post_mime_type' => $wp_filetype['type'],
+						'post_parent'    => $post->ID,
+						'post_title'     => preg_replace( '/\.[^.]+$/', '', $filename ),
+						'post_content'   => '',
+						'post_status'    => 'inherit'
+					);
+
+					$attachment_id = wp_insert_attachment( $attachment, $upload_file['file'], $post->ID );
+
+					if ( ! is_wp_error( $attachment_id ) ) {
+						// if attachment post was successfully created, insert it as a thumbnail to the post $post_id.
+						require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+
+						$attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload_file['file'] );
+
+						wp_update_attachment_metadata( $attachment_id,  $attachment_data );
+						set_post_thumbnail( $post->ID, $attachment_id );
+					}
+				}
+
+		//}
+		//}
+	}
+    
 }
