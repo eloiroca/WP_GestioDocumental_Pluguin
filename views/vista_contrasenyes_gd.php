@@ -29,7 +29,7 @@
              <div class="col-md-12 panell_opcions"><img class="img_buscar" src='<?php echo plugins_url( 'gestiodocumentalpluguin/assets/img/icono-buscar.png');?>'>
              <input id="filtre_contrasenyes" class="filtrar_contrasenya" type="text" class="form-control" placeholder="Cerca contrasenyes, utlitza el caracter \ per buscar més informació ..."/>
              <img class="img_buscar" src='<?php echo plugins_url( 'gestiodocumentalpluguin/assets/img/icono-buscar.png'); ?>'></div>
-
+             
              <div class="row">
                <div class="th_assignacio row ">
                  <div class="col-md-1">Tipus</div>

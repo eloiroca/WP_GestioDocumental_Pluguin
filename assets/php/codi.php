@@ -356,3 +356,12 @@ function crear_entrades_automatiques(){
 	}
     
 }
+/**PRESTASHOP CATEGORIES TPL**/
+
+{foreach from=Product::getProductCategoriesFull(Tools::getValue('id_product')) item=cat}
+ 	{if $cat.name == 'Zapatos'}
+		<a class='guia_talles_product_variants_tpl' href='https://lopite.com/es/content/14-guia-de-tallas' target='_blank' style='margin-top:10px;'><img src='https://lopite.com/themes/bos_ocbee/assets/img/guia.jpg' width='100'>Guia de Tallas</a>
+		{break}
+	{/if}
+    
+{/foreach}

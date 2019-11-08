@@ -10,9 +10,9 @@
       $valorParametreSqlDesti = $_POST['valorParametreSqlDesti'];
       $valorParametreCodiOrigen = $_POST['valorParametreCodiOrigen'];
       $valorParametreCodiDesti = $_POST['valorParametreCodiDesti'];
-      $valorParametreConfigGesta = $_POST['valorParametreConfigGesta'];
+      /*$valorParametreConfigGesta = $_POST['valorParametreConfigGesta'];
       $valorParametreServerGesta = $_POST['valorParametreServerGesta'];
-      $valorParametreBDGesta = $_POST['valorParametreBDGesta'];
+      $valorParametreBDGesta = $_POST['valorParametreBDGesta'];*/
 
 
       global $wpdb;
@@ -28,7 +28,7 @@
       if ($valorParametreCodiOrigen!=''){$wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorParametreCodiOrigen."' where nom = 'parametre_CodiOrigen_backup'");}
       if ($valorParametreCodiDesti!=''){$wpdb->get_results("update gd_pluguin_parametres set valor = '".$valorParametreCodiDesti."' where nom = 'parametre_CodiDesti_backup'");}
 
-      editar_fitxer_gesta('modificar_servidor',$valorParametreServerGesta, $valorParametreBDGesta);
+      //editar_fitxer_gesta('modificar_servidor',$valorParametreServerGesta, $valorParametreBDGesta);
 
       if (is_dir($valorParametreRuta)){
         //Ens connectem a la base de dades i guardem el parametre.
@@ -41,7 +41,7 @@
     	wp_die();
 
     }
-    function editar_fitxer_gesta($accio,$valorParametreServerGesta,$valorParametreBDGesta){
+    /*function editar_fitxer_gesta($accio,$valorParametreServerGesta,$valorParametreBDGesta){
       $xml = new DomDocument();
       $xml->preserveWhitespace = false;
       $xml->load($fitxerConfig);
@@ -87,7 +87,7 @@
           //$entry->parentNode->removeChild($entry);
       }
       $xml->save($fitxerConfig);
-    }
+    }*/
     add_action( 'wp_function_comprobar_dadesPerDefecte', 'comprobar_dadesPerDefecte' );
     //ComprobacioDadesPerDefecte
     function comprobar_dadesPerDefecte($versio){
@@ -644,7 +644,7 @@ function estat_modul($nomModul){
     return $estat->valor;
 }
 //Funcio que llegira el fitxer de configuracó del Gesta
-function obtenirDadesFitxerConfig($tipus){
+/*function obtenirDadesFitxerConfig($tipus){
   $fitxerConfig = obtenirParametreGestaDefecte();
 
   $xml = simplexml_load_file($fitxerConfig);
@@ -688,6 +688,6 @@ function obtenirDadesFitxerConfig($tipus){
       return end($arrayBD);
   }
 
-}
+}*/
 
 ?>

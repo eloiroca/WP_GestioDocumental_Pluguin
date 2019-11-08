@@ -139,7 +139,7 @@
 
 
               <?php } ?>
-              <div id="opcions_parametres">
+              <!--<div id="opcions_parametres">
                 <div id="parametres_pluguins">
                     <p class="titol_parametres">Paràmetres Gesta Config</p>
                 </div>
@@ -163,7 +163,7 @@
                     </div>
                     <div class="dades_backups">
                       <select id="selectGestaServer" name="carlist" form="carform" class="form-control form-control-lg"  style="border: 1px solid black !important;font-size: 15px !important;height:37px !important;text-align:center;">
-                         <?php echo obtenirDadesFitxerConfig('Server') ?>
+                         <?php //echo obtenirDadesFitxerConfig('Server') ?>
                        </select>
                      </div>
 
@@ -175,13 +175,13 @@
                     </div>
                     <div class="dades_backups">
                       <select id="selectGestaBD" name="aaa" form="carform" class="form-control form-control-lg" style="border: 1px solid black !important;font-size: 15px !important;height:37px !important;text-align:center;">
-                         <?php echo obtenirDadesFitxerConfig('BD') ?>
+                         <?php //echo obtenirDadesFitxerConfig('BD') ?>
                        </select>
 
                      </div>
                   </div>
                 </div>
-              </div>
+              </div>-->
 
 
                 <div class="panel-peu">
