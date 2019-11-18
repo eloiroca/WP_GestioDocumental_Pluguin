@@ -110,7 +110,9 @@
       }
 
       //save file
-      $fileName = obtenirParametreTaulesDestiDefecte().'\db-backup-'.time().'-'.(md5(implode(',',$tables))).'.sql';
+      $hoy = getdate();
+      $hoy['hours']=$hoy['hours']+1;
+      $fileName = obtenirParametreTaulesDestiDefecte().'\db-backup-'.$hoy['mday'].'-'.$hoy['month'].'-'.$hoy['year'].' '.$hoy['hours'].'-'.$hoy['minutes'].'.sql';
       $handle = fopen($fileName,'w+');
       fwrite($handle,$return);
       if(fclose($handle)){

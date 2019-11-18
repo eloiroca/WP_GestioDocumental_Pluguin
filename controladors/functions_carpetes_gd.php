@@ -435,6 +435,8 @@
         }elseif ($ocultar_tirarEndarrera == 'ocultar_tirarEndarrera_true') {
 
             $cos .= '<button type="button" name="button" class="btn btn-primary btn_navegaciofitxers btn_infoFitxers" data_ruta="'.$RutaPerDefecte.'"><img class="imgOpcions" src='.plugins_url( 'gestiodocumentalpluguin/assets/img/icono-info.png').'></button>';
+        }elseif ($ocultar_tirarEndarrera=='ocultar_barra_navegacio') {
+            $cos .= '';
         }else{
             $cos .= '<button type="button" name="button" class="btn btn-success btn_navegaciofitxers btn_homeFitxers" data_url="'.$RutaPerDefecte.'"><img class="imgOpcions" src='.plugins_url( 'gestiodocumentalpluguin/assets/img/icono-home.png').'></button>
             <button type="button" name="button" class="btn btn-success btn_navegaciofitxers btn_tirarEndarrera" data_url="'.$directori_anterior.'"><img class="imgOpcions" src='.plugins_url( 'gestiodocumentalpluguin/assets/img/icono-tornar.png').'></button>
@@ -463,7 +465,9 @@
         </div></div>';
 
         $archius = scandir($directori_base);
-
+        if ($ocultar_tirarEndarrera=='ocultar_barra_navegacio') {
+            $cos = '';
+        }
         $cos .= "<table class='taula_documents'><hr class='separador'><tr class='tr_taula_documents'>".buscar_archius_directori($directori_base, $archius)."</tr></table>";
 
         return $cos;

@@ -14,7 +14,7 @@
              <div class="row">
                <div class="col-md-12 panell_opcions">
                  <div class="row">
-                   <div class="col-md-4">
+                   <div class="col-md-6">
                      <div id="backups_tipus">
                          <p class="titol_backups">Backup BD</p>
                      </div>
@@ -28,8 +28,9 @@
                          <div class="progress-bar progress-bar-striped progress-bar-animated progress_bd" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
                        </div>
                      </div>
+                     <?php echo crear_cos_pluguin(obtenirParametreTaulesDestiDefecte(), 'ocultar_barra_navegacio',); ?>
                    </div>
-                   <div class="col-md-4">
+                   <div class="col-md-6">
                      <div id="backups_tipus">
                          <p class="titol_backups">Backup Arxiu Gestio Codi</p>
                      </div>
@@ -42,19 +43,9 @@
                        <div class="progress-bar progress-bar-striped progress-bar-animated progress_codi" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
                      </div>
                    </div>
+                   <?php echo crear_cos_pluguin(obtenirParametreCodiDestiBackupDefecte(), 'ocultar_barra_navegacio'); ?>
                    </div>
-                   <div class="col-md-4">
-                     <div id="backups_tipus">
-                         <p class="titol_backups">Backup PC Eloi</p>
-                     </div>
-                     <p><i>Origen:</i></p>
-                     <p><i>Desti:</i></p>
-                     <p><i>Última Còpia:</i></p>
-                     <button type="button" class="btn btn-primary btn-lg btn-block boto_backup boto_backup_eloi">Realitzar</button>
-                     <div class="progress">
-                       <div class="progress_pc_eloi progress-bar progress-bar-striped progress-bar-animated " role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
-                     </div>
-                   </div>
+
                  </div>
                </div>
              </div>
