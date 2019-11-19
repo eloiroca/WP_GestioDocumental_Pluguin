@@ -72,30 +72,17 @@
 
                   <ul style="margin-left: 15px; margin-top:10px;"><li class="li_boleta">Fitxers per fila</li></ul>
                   <div class='count-input space-bottom'> <a class='incr-btn' data-action='decrease' href='#'>–</a> <input id="fitxersFila" class='quantity' type='number' readonly name='quantity' value='<?php echo obtenirParametreFitxersPerFila(); ?>'/> <a class='incr-btn' data-action='increase' href='#'>&plus;</a> </div>
-                  <ul style="margin-left: 15px;">
-                    <li class="li_boleta">Habilitar Gestio Carpetes sense Loggejar-se
-                      <input class="check_bonic" type="checkbox" id="backups" name="modul_backups" value="GestioBackups">
-                      <label for="backups"></label>
-                    </li>
-                  </ul>
+
                 </div>
                <?php } ?>
 
-              <?php if (estat_modul("GestioContrasenyes")=="true"){ ?>
-                <div id="opcions_parametres">
+              <?php //if (estat_modul("GestioContrasenyes")=="true"){ ?>
+                <!--<div id="opcions_parametres">
                   <div id="parametres_pluguins">
   										<p class="titol_parametres">Paràmetres Gestió Contrasenyes</p>
   								</div>
-                  <ul style="margin-left: 15px;">
-                    <li class="li_boleta">Habilitar Gestio Contrasenya sense Loggejar-se
-                      <input class="check_bonic" type="checkbox" id="backups" name="modul_backups" value="GestioBackups">
-                      <label for="backups"></label>
-                    </li>
-                  </ul>
-
-
-								</div>
-              <?php } ?>
+								</div>-->
+              <?php //} ?>
               <?php if (estat_modul("GestioBackups")=="true"){ ?>
                 <div id="opcions_parametres">
                   <div id="parametres_pluguins">
