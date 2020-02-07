@@ -1,5 +1,6 @@
 jQuery(document).ready(function(){
   //Fer que puguem navegar per les carpetes despres de les crides ajax
+
   comprobar_actualitzarEventsJS();
   jQuery('#postbox-container-2').append(jQuery('#assignar_carpeta_meta_box'));
 
@@ -92,7 +93,6 @@ function comprobar_actualitzarEventsJS(){
 }
 
 function actualitzarEventsJS(){
-
   jQuery('.foto-arxiu').mouseenter(function() {
       jQuery('.foto-arxiu').css( 'cursor', 'pointer' );
   });
@@ -384,6 +384,7 @@ function actualitzarEventsJS(){
     carregar_pluguin_pujades();
 }
 function actualitzar_cos_fitxers(ruta, id_pagina){
+
 
     var data = {'action': 'entrarCarpetaSeleccionada',
             'valorRutaCarpeta' : ruta,

@@ -92,7 +92,7 @@
                   <br>
 
                   <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                       <div id="backups_tipus">
                           <p class="titol_backups">Backup BD</p>
                       </div>
@@ -102,29 +102,15 @@
 
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                       <div id="backups_tipus">
                           <p class="titol_backups">Backup Arxiu Gestio Codi</p>
                       </div>
                       <p><i>Origen: <span class="info_dades_backups"><input id="origenCodiBackup" type="text" class="form-control input_form" style="border: 1px solid black !important;" placeholder="Ruta per defecte ..." value="<?php echo obtenirParametreCodiOrigenBackupDefecte(); ?>"/></span></i></p>
                       <p><i>Desti: <span class="info_dades_backups"></span><input id="destiCodiBackup" type="text" class="form-control input_form" style="border: 1px solid black !important;" placeholder="Ruta per defecte ..." value="<?php echo obtenirParametreCodiDestiBackupDefecte(); ?>"/></i></p>
-
-                    </div>
-                    <div class="col-md-4">
-                      <div id="backups_tipus">
-                          <p class="titol_backups">Backup PC Eloi</p>
-                      </div>
-                      <p><i>Origen: <span class="info_dades_backups"><input id="origenSQLBackup" type="text" class="form-control input_form" style="border: 1px solid black !important;" placeholder="Ruta per defecte ..." value=""/></span></i></p>
-                      <p><i>Desti: <span class="info_dades_backups"></span><input id="destiSQLBackup" type="text" class="form-control input_form" style="border: 1px solid black !important;" placeholder="Ruta per defecte ..." value=""/></i></p>
                     </div>
                   </div>
-
-
-
-
 								</div>
-
-
               <?php } ?>
               <!--<div id="opcions_parametres">
                 <div id="parametres_pluguins">

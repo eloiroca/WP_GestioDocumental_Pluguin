@@ -88,8 +88,27 @@
         $contrasenyes = $wpdb->get_results( "update gd_pluguin_contrasenyes set tipo_contrasenya='".$_POST['valorTipus']."', usuari='".$_POST['valorUsuari']."', contrasenya='".$_POST['valorContrasenya']."', descripcio='".$_POST['valorDescripcio']."', url='".$_POST['valorUrl']."', comentari='".$_POST['valorComentari']."' where id=".$_POST['valorContrasenyaId']);
 
     }
+    //Funcio que afegira una tasca
+    add_action( 'wp_ajax_afegirTascaBD', 'afegirTasca' );
+    function afegirTasca(){
+        global $wpdb;
+        $wpdb->get_results( "insert into gd_pluguin_notes (id, descripcio, hora, estat) values ('".$_POST['tascaID']."','".$_POST['tasca']."','".date("Y-m-d H:i:s")."','0')" );
+    }
 
+    //Funcio que obtindra les notes
+    add_action( 'wp_ajax_obtenirNotes', 'obtenirNotes' );
+    function obtenirNotes(){
+        global $wpdb;
+        $notes = $wpdb->get_results( "select * from gd_pluguin_notes where estat=0 " );
 
-
-
+        for($i = 0; $i<count($notes); $i++){
+          echo '<div class="tasca_programada" data_id="'.$notes[$i]->id.'">'.$notes[$i]->descripcio.'<input type="checkbox" class="check_completat"></div>';
+        }
+    }
+    //Funcio per completar una tasca
+    add_action( 'wp_ajax_completarTascaBD', 'completarTascaBD' );
+    function completarTascaBD(){
+        global $wpdb;
+        $wpdb->get_results( "update gd_pluguin_notes set estat = 1 where id = ".$_POST['notaID']);
+    }
 ?>

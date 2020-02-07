@@ -683,7 +683,7 @@ input[type=checkbox].check_bonic + label:before {
 
 input[type=checkbox].check_bonic + label:active:before {
   transform: scale(0);
-  
+
 }
 
 input[type=checkbox].check_bonic:checked + label:before {
@@ -714,4 +714,48 @@ span.span_cuantitat_contrassenyes {
 
 .div_contador_contrasenyes{
   text-align: center;
+}
+
+.barra_afegir_tasca{
+    border-bottom: 1px solid green !important;
+    border-left: 1px solid green !important;
+    border-bottom-left-radius: 5px !important;
+    padding-left: 5px !important;
+    width: 100%;
+    border-top: 0px !important;
+    border-right: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    border-top-left-radius: 0px !important;
+}
+
+.barra_afegir_tasca:focus{
+  border-color: green !important;
+  border-top: 0px !important;
+  border-right: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-top-left-radius: 0px !important;
+  /*border-color: rgb(255, 144, 0) !important;*/
+  box-shadow: 0 0px 0px rgba(229, 103, 23, 0.075)inset, 0 0 0px rgba(255,144,0,0.075) !important;
+  outline: 0 none !important;
+}
+
+[contentEditable=true]:empty:not(:focus):before{
+    content:attr(data-text)
+}
+
+.tasca_programada{
+    font-style: oblique;
+    font-size: 12px;
+    background-color: yellow;
+    word-wrap: break-word;
+    margin-top: 5px;
+    border-bottom: 1px solid green;
+    border-left: 1px solid green;
+    border-bottom-left-radius: 5px;
+    padding-left: 5px;
+}
+
+input.check_completat {
+    float: right;
+    margin-top: 1px;
 }

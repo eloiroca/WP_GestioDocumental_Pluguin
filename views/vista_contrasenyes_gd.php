@@ -24,12 +24,14 @@
                 <div class="col-md-4">
                     <div class='div_contador_contrasenyes'><span class="span_cuantitat_contrassenyes"><?php echo obtenirContrasenyesTotals();?></span></div>
                 </div>
-
+                <div class="col-md-4">
+                    <div class="div_tasques"><input type='text' class='barra_afegir_tasca' placeholder="Afegir nota"><?php echo obtenirNotes();?></div>
+                </div>
              </div>
              <div class="col-md-12 panell_opcions"><img class="img_buscar" src='<?php echo plugins_url( 'gestiodocumentalpluguin/assets/img/icono-buscar.png');?>'>
              <input id="filtre_contrasenyes" class="filtrar_contrasenya" type="text" class="form-control" placeholder="Cerca contrasenyes, utlitza el caracter \ per buscar més informació ..."/>
              <img class="img_buscar" src='<?php echo plugins_url( 'gestiodocumentalpluguin/assets/img/icono-buscar.png'); ?>'></div>
-             
+
              <div class="row">
                <div class="th_assignacio row ">
                  <div class="col-md-1">Tipus</div>

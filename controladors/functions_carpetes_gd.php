@@ -99,6 +99,9 @@
       $wpdb->get_results( "CREATE TABLE IF NOT EXISTS gd_pluguin_carpetesAssignades ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, id_pagina INT(25) NOT NULL, url VARCHAR(255), ruta_assignada VARCHAR(255) NOT NULL)" );
       //Crear taula contrasenyes
       $wpdb->get_results( "CREATE TABLE IF NOT EXISTS gd_pluguin_contrasenyes ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, tipo_contrasenya VARCHAR(255) NOT NULL, descripcio VARCHAR(255) NOT NULL, usuari VARCHAR(255) NOT NULL, contrasenya VARCHAR(255) NOT NULL, url VARCHAR(255), comentari VARCHAR(255))" );
+      //Crear taula notes
+      $wpdb->get_results( "CREATE TABLE IF NOT EXISTS gd_pluguin_notes ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, descripcio VARCHAR(255) NOT NULL, hora DATE, estat boolean NOT NULL default 0)" );
+
       //S'hi no hi ha entrades de parametres creem els de per defecte
       $numParametres = $wpdb->get_row( "select count(id) numIds from gd_pluguin_parametres" );
       if ($numParametres->numIds == 0){
@@ -115,7 +118,6 @@
           $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_CodiOrigen_backup','".str_replace('\\', '/', plugin_dir_path( __DIR__ )).'assets/php/codi.php'."')" );
           $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_CodiDesti_backup','C:\\\Users\\\Eloi\\\Desktop\\\Backups GD\\\Codi')" );
           $wpdb->get_results( "insert into gd_pluguin_parametres (nom, valor) values ('parametre_GestaConfig_fitxer','C:\\\Users\\\Eloi\\\Desktop\\\Gesta Local\\\Gesta.exe.config')" );
-
 
       }
       //Actualitzem la versio sempre que la canviem

@@ -56,7 +56,21 @@ function crear_entrades_automatiques(){
     }
     //print_r($array_poblacions);
 }
-
+/**************************************AFEFIR DESCRIPCIO CATEGORIA PRODUCTES*********************************************/
+function woocommerce_after_shop_loop_item_title_short_description() {
+	global $product;
+	if ( ! $product->post->post_excerpt ) return;
+	?>
+	<div itemprop="description">
+		<?php //echo apply_filters( 'woocommerce_short_description', $product->post->post_excerpt ) 
+		echo substr($product->short_description, 0, 12)."<br>";
+		echo $product->description;
+		?>
+		
+	</div>
+	<?php
+}
+add_action('woocommerce_after_shop_loop_item_title', 'woocommerce_after_shop_loop_item_title_short_description', 5);
 /**************************************AFEGIR COLUMNES TAULES WORDPRESS (bigjeans)****************************************/
 
 // GET L'ATRIBUT COLOR
@@ -365,3 +379,23 @@ function crear_entrades_automatiques(){
 	{/if}
     
 {/foreach}
+
+/**PRESTASHOP PRODUCTES BD**/
+//Eliminar productes de la base de dades directament
+//Delete
+DELETE ps_product, ps_product_lang, ps_manufacturer FROM ps_product  
+LEFT JOIN ps_product_lang ON ps_product.id_product=ps_product_lang.id_product
+LEFT JOIN ps_manufacturer ON ps_product.id_manufacturer=ps_manufacturer.id_manufacturer
+WHERE ps_product.active=1 AND ps_product_lang.id_lang=3 and ps_manufacturer.name='Balmain'
+//Select
+select p.id_product AS ID,p.reference AS REFERENCIA,pl.name AS NOMBRE ,pm.name AS FABRICANTE, p.price AS PRECIO FROM ps_product p 
+LEFT JOIN ps_product_lang pl ON p.id_product=pl.id_product
+LEFT JOIN ps_manufacturer pm ON p.id_manufacturer=pm.id_manufacturer
+WHERE p.active=1 AND pl.id_lang=3
+//UPDATE
+SELECT p.id_product, p.id_category_default, pl.name from ps_product_shop p LEFT JOIN ps_product_lang pl ON p.id_product=pl.id_product where id_category_default = 208
+SELECT p.id_product, p.id_category_default, pl.name from ps_product p LEFT JOIN ps_product_lang pl ON p.id_product=pl.id_product where id_category_default = 208
+update ps_product_shop p LEFT JOIN ps_product_lang pl ON p.id_product=pl.id_product set p.id_category_default = 36 where p.id_category_default = 208 and pl.name like '%pantalon%'
+update ps_product p LEFT JOIN ps_product_lang pl ON p.id_product=pl.id_product set p.id_category_default = 36 where p.id_category_default = 208 and pl.name like '%pantalon%'	
+# productes amb combinacions que no tenen referencia SELECT a.id_product, a.id_product_attribute, l.name FROM indikid.prstshp_product_attribute a LEFT JOIN prstshp_product_lang l ON l.id_product = a.id_product where a.reference = '' AND l.id_lang = 1
+# productes simples que no tenen referencia SELECT p.id_product, l.name FROM indikid.prstshp_product p LEFT JOIN prstshp_product_attribute a on a.id_product = p.id_product LEFT JOIN prstshp_product_lang l ON l.id_product = p.id_product where p.reference = '' AND a.id_product_attribute is null group by id_product
