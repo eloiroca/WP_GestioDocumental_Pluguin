@@ -1,6 +1,13 @@
+var htmlnotes  = '';
+
 jQuery(document).ready(function(){
   //Fer que puguem aplicar botons despres de les crides ajax
   actualitzarEventsJScontrasenyes();
+  //Event de copiar al portapapeles les contrasenyes
+  jQuery('.td_assignacio_info').click(function () {
+    copiarAlPortapapers(jQuery(this));
+
+  });
   //Event al apretar el botó afegir contrasenya
   jQuery('.btn_afegirContrasenya').click(function() {
       jQuery('.fixat').toggle('slow').css({
@@ -189,6 +196,9 @@ jQuery('.btn_enviarContrasenya').click(function() {
         location.reload();
     });
 
+
+
+
     //Event que fara que fagi ping a una IP o nom de domini
     jQuery('.span_ping').click(function(){
       Swal.fire({
@@ -227,49 +237,61 @@ jQuery('.btn_enviarContrasenya').click(function() {
                   }
               });
           }
-          })
-
-
-
     });
-    //Event de copiar al portapapeles les contrasenyes
-    jQuery('.td_assignacio_info').click(function () {
-        copiarAlPortapapers(jQuery(this));
-    });
-
-    //Event al apretar intro al afegir una nota
-    jQuery('.barra_afegir_tasca').keypress(function(e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if(code==13 & jQuery(this).val().length >= 5){
-            var tascaID = Math.floor(Math.random() * 95543);
-            var tasca = jQuery(this).val();
-            jQuery('.div_tasques').append('<div class="tasca_programada" data_id="'+tascaID+'">'+tasca+'<input class="check_completat" type="checkbox"></div>');
-            jQuery('.check_completat').off();
-            jQuery('.barra_afegir_tasca').val('');
-            //jQuery('.tasca_programada').draggable();
-            //Introduim a la base de dades la tasca_programada
-            var data = {'action': 'afegirTascaBD',
-                    'tascaID' : tascaID,
-                    'tasca' : tasca
-                  }
-            jQuery.ajax({
-                  type : "post",
-                  url : ajax_object.ajax_url,
-                  data : data,
-                  success: function(response) {
-
-                  },
-                  error: function(response){
-                      console.log(response);
-                  }
-              });
-              actualitzarEventsJS();
-        }
-    });
-    //jQuery('.tasca_programada').draggable();
-
 });
 
+//Event que obrira la vista de notes pendents
+jQuery('.span_notes').click(function(){
+        Swal.fire({
+          title: '<strong>NOTES PENDENTS</strong>',
+          icon: 'info',
+          html: htmlnotes,
+          showCloseButton: true,
+          showCancelButton: false,
+          confirmButtonText: 'Afegir Nota'
+        }).then((result) => {
+          if (result.value) {
+            Swal.fire({
+                title: 'Text Nota:',
+                input: 'text',
+                showCancelButton: true,
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancel·lar',
+                confirmButtonText: 'Afegir',
+                confirmButtonColor: '#28B463',
+                showLoaderOnConfirm: true,
+                allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                if (result.value) {
+                  var tascaID = Math.floor(Math.random() * 95543);
+                  var tasca = result.value;
+
+                  var data = {'action': 'afegirTascaBD',
+                          'tascaID' : tascaID,
+                          'tasca' : tasca
+                        }
+                  jQuery.ajax({
+                        type : "post",
+                        url : ajax_object.ajax_url,
+                        data : data,
+                        success: function(response) {
+                            alertify.success("Nota afegida !!!");
+                            actualitzarEventsJScontrasenyes();
+                        },
+                        error: function(response){
+                            console.log(response);
+                        }
+                    });
+                }
+                })
+          }
+        })
+      actualitzarEventsJScontrasenyes();
+    });
+
+
+
+});
 function actualitzarEventsJScontrasenyes(){
     //Event al fer clic al boto de completada la nota
     jQuery('.check_completat').click(function () {
@@ -284,13 +306,44 @@ function actualitzarEventsJScontrasenyes(){
             data : data,
             success: function(response) {
               alertify.success("Nota Completada !!!");
-
+              actualitzarEventsJScontrasenyes();
             },
             error: function(response){
                 console.log(response);
             }
         });
     });
+
+    var data = {'action': 'obtenirNotes'}
+    jQuery.ajax({
+          type : "post",
+          url : ajax_object.ajax_url,
+          data : data,
+          success: function(response) {
+            response = response.slice(0, -1);
+            htmlnotes = response;
+          },
+          error: function(response){
+              console.log(response);
+          }
+      });
+
+    //Event actualitzar el contador de les notes pendents
+    var data = {'action': 'obtenirNotesPendents'}
+    jQuery.ajax({
+          type : "post",
+          url : ajax_object.ajax_url,
+          data : data,
+          success: function(response) {
+              response = response.slice(0, -1);
+              jQuery('.notes_pendents').text(response);
+              actualitzarEventsJS();
+          },
+          error: function(response){
+              console.log(response);
+          }
+      });
+
 }
 
 function copiarAlPortapapers(elemento) {

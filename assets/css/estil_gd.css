@@ -31,7 +31,7 @@
     max-width: 150px !important;
     font-family: 'Asap', sans-serif !important;
 }
-.span_ping{
+.span_ping, .span_notes{
     color:#3498DB;
     font-weight: bold;
     font-style: oblique;
@@ -328,7 +328,7 @@
 }
 
 /* Hide the browser's default checkbox */
-.container input {
+.td_taula_documents .container input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -743,19 +743,38 @@ span.span_cuantitat_contrassenyes {
     content:attr(data-text)
 }
 
+.notes_pendents{
+  color: green;
+  position: absolute;
+  font-size: 13px;
+  right: 20px;
+  top: 13px;
+}
+
 .tasca_programada{
-    font-style: oblique;
+  font-style: oblique;
     font-size: 12px;
-    background-color: yellow;
     word-wrap: break-word;
     margin-top: 5px;
-    border-bottom: 1px solid green;
-    border-left: 1px solid green;
     border-bottom-left-radius: 5px;
     padding-left: 5px;
+    overflow: hidden;
+    padding: 11px 8px 2px;
+    position: relative;
+    z-index: 10;
+    display: inline-block;
+    border-radius: 5px;
+    border: 1px solid navajowhite;
+    min-height: 41px;
+    margin-right: 20px;
 }
 
 input.check_completat {
     float: right;
     margin-top: 1px;
+    margin-left: 10px;
+}
+
+.contenedor_notes{
+    text-align: right;
 }

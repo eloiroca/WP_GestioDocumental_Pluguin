@@ -102,8 +102,16 @@
         $notes = $wpdb->get_results( "select * from gd_pluguin_notes where estat=0 " );
 
         for($i = 0; $i<count($notes); $i++){
-          echo '<div class="tasca_programada" data_id="'.$notes[$i]->id.'">'.$notes[$i]->descripcio.'<input type="checkbox" class="check_completat"></div>';
+          echo '<div class="tasca_programada" data_id="'.$notes[$i]->id.'">'.htmlspecialchars($notes[$i]->descripcio).'<input type="checkbox" class="check_completat"></div>';
         }
+    }
+    //Funcio que obtindra les notes pendents
+    add_action( 'wp_ajax_obtenirNotesPendents', 'obtenirNotesPendents' );
+    function obtenirNotesPendents(){
+        global $wpdb;
+        $notesPendents = $wpdb->get_results( "select count(id) numeronotes from gd_pluguin_notes where estat=0" );
+
+        echo $notesPendents[0]->numeronotes;
     }
     //Funcio per completar una tasca
     add_action( 'wp_ajax_completarTascaBD', 'completarTascaBD' );

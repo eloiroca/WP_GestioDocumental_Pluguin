@@ -24,8 +24,8 @@
                 <div class="col-md-4">
                     <div class='div_contador_contrasenyes'><span class="span_cuantitat_contrassenyes"><?php echo obtenirContrasenyesTotals();?></span></div>
                 </div>
-                <div class="col-md-4">
-                    <div class="div_tasques"><input type='text' class='barra_afegir_tasca' placeholder="Afegir nota"><?php echo obtenirNotes();?></div>
+                <div class="col-md-4 contenedor_notes">
+                    <span class="span_notes">Notes<img class="img_buscar" src='<?php echo plugins_url( 'gestiodocumentalpluguin/assets/img/icono-notes.png');?>'><div class="notes_pendents"><?php echo obtenirNotesPendents();?></div></span>
                 </div>
              </div>
              <div class="col-md-12 panell_opcions"><img class="img_buscar" src='<?php echo plugins_url( 'gestiodocumentalpluguin/assets/img/icono-buscar.png');?>'>
