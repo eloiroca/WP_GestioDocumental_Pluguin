@@ -101,6 +101,15 @@
       $wpdb->get_results( "CREATE TABLE IF NOT EXISTS gd_pluguin_contrasenyes ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, tipo_contrasenya VARCHAR(255) NOT NULL, descripcio VARCHAR(255) NOT NULL, usuari VARCHAR(255) NOT NULL, contrasenya VARCHAR(255) NOT NULL, url VARCHAR(255), comentari VARCHAR(255))" );
       //Crear taula notes
       $wpdb->get_results( "CREATE TABLE IF NOT EXISTS gd_pluguin_notes ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, descripcio VARCHAR(255) NOT NULL, hora DATE, estat boolean NOT NULL default 0)" );
+      //Crear taula clients
+      $wpdb->get_results( "CREATE TABLE IF NOT EXISTS gd_pluguin_clients ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, nom VARCHAR(255) NOT NULL, nif VARCHAR(255) NOT NULL, adreca VARCHAR(255), tel VARCHAR(255), poblacio VARCHAR(255), cp VARCHAR(255), provincia VARCHAR(255), email VARCHAR(255), url VARCHAR(255), comentari VARCHAR(255))");
+      //Crear taula categories
+      $wpdb->get_results( "CREATE TABLE IF NOT EXISTS gd_pluguin_categories ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, nom VARCHAR(255) NOT NULL, categoria_pare INT(25))");
+      //Crear taula liniadocumental
+      $wpdb->get_results( "CREATE TABLE IF NOT EXISTS gd_pluguin_liniadocumental ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, titol VARCHAR(255) NOT NULL, contingut VARCHAR(255) NOT NULL, comentari VARCHAR(255), id_categoria INT(25) NOT NULL, id_client INT(25))");
+
+
+
 
       //S'hi no hi ha entrades de parametres creem els de per defecte
       $numParametres = $wpdb->get_row( "select count(id) numIds from gd_pluguin_parametres" );

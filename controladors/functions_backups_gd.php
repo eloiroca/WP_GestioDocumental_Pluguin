@@ -27,7 +27,7 @@
   }
   add_action( 'wp_ajax_realitzar_backup_db', 'realitzar_backup_db' );
   function realitzar_backup_db(){
-
+    //aa
     //MySQL server and database
     $dbhost = 'localhost';
     $dbuser = 'root';

@@ -14,6 +14,7 @@ include 'controladors\functions_carpetes_gd.php';
 include 'controladors\functions_contrasenyes_gd.php';
 include 'controladors\functions_codi_gd.php';
 include 'controladors\functions_backups_gd.php';
+include 'controladors\functions_clients_gd.php';
 //Encuarem els estils, JS, etc dins del wordpress
 
 function encuar_estils_pluguin(){
@@ -76,6 +77,8 @@ comprobar_dadesPerDefecte($versio);
 function crear_menu_pluguin(){
   add_menu_page('GestioDocumental', 'GestioDocumental', 'manage_options', 'gestio-menu', 'crear_menu_general',plugins_url( 'gestiodocumentalpluguin/assets/img/icon.png' ));
   if (estat_modul("GestioDocumental")=="true"){add_submenu_page( 'gestio-menu', 'GestioCarpetes', 'GestioCarpetes', 'manage_options', 'gestio-menu-carpetes', 'crear_menu_carpetes');}
+  add_submenu_page( 'gestio-menu', 'GestioClients', 'GestioClients', 'manage_options', 'gestio-menu-clients', 'crear_menu_clients');
+  add_submenu_page( '', 'GestioClientConcret', 'GestioClientConcret', 'manage_options', 'gestio-menu-clients-concret', 'crear_menu_client_concret');
   if (estat_modul("GestioContrasenyes")=="true"){add_submenu_page( 'gestio-menu', 'GestioContrasenyes', 'GestioContrasenyes', 'manage_options', 'gestio-menu-contrasenyes', 'crear_menu_contrasenyes');}
   if (estat_modul("GestioCodi")=="true"){add_submenu_page( 'gestio-menu', 'GestioCodi', 'GestioCodi', 'manage_options', 'gestio-menu-codi', 'crear_menu_codi');}
   if (estat_modul("GestioBackups")=="true"){add_submenu_page( 'gestio-menu', 'GestioBackups', 'GestioBackups', 'manage_options', 'gestio-menu-backups', 'crear_menu_backups');}
@@ -101,4 +104,12 @@ function crear_menu_backups(){
 
 function crear_menu_general(){
     include 'views/vista_parametres_gd.php';
+}
+
+function crear_menu_clients(){
+    include 'views/vista_clients_gd.php';
+}
+
+function crear_menu_client_concret(){
+    include 'views/vista_gestio_clients_gd.php';
 }
