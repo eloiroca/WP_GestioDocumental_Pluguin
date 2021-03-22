@@ -289,7 +289,10 @@ jQuery('.span_notes').click(function(){
       actualitzarEventsJScontrasenyes();
     });
 
-
+    //Event al seleccionar un tipus de contrasenya
+    jQuery("#existents_tipus").change(function(){
+        jQuery("input[name='tipus_contrasenya']").val(jQuery(this).val());
+    })
 
 });
 function actualitzarEventsJScontrasenyes(){

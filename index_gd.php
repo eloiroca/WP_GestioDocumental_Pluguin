@@ -3,13 +3,13 @@
 Plugin Name: GestioDocumentalPluguin
 Plugin URI:
 Description: Pluguin que augmentara les funcionalitats de la web documental
-Version: 1.3.1
+Version: 1.3.4
 Author: EloiRoca
 Author URI:
 License:
 License URI:
 */
-$versio = "1.3.2";
+$versio = "1.3.4";
 include 'controladors\functions_carpetes_gd.php';
 include 'controladors\functions_contrasenyes_gd.php';
 include 'controladors\functions_codi_gd.php';
@@ -18,7 +18,7 @@ include 'controladors\functions_clients_gd.php';
 //Encuarem els estils, JS, etc dins del wordpress
 
 function encuar_estils_pluguin(){
-    $versio = "1.3.2";
+    $versio = "1.3.4";
 
     wp_enqueue_style( 'style-modals', plugins_url( 'gestiodocumentalpluguin/assets/css/formularis_modals.css'), array(), $versio);
     wp_enqueue_style( 'style-pluguin-pujarFitxers1', plugins_url( 'gestiodocumentalpluguin/assets/css/jquery.dm-uploader.min.css'), array(), $versio);
@@ -67,6 +67,7 @@ function encuar_estils_pluguin(){
 
 add_action('wp_enqueue_scripts', 'encuar_estils_pluguin',10);
 add_action('admin_enqueue_scripts', 'encuar_estils_pluguin',10);
+
 //if (get_admin_page_title()=="Funcionalitats"){
 
 do_action( 'wp_enqueue_scripts' );
@@ -77,7 +78,7 @@ comprobar_dadesPerDefecte($versio);
 function crear_menu_pluguin(){
   add_menu_page('GestioDocumental', 'GestioDocumental', 'manage_options', 'gestio-menu', 'crear_menu_general',plugins_url( 'gestiodocumentalpluguin/assets/img/icon.png' ));
   if (estat_modul("GestioDocumental")=="true"){add_submenu_page( 'gestio-menu', 'GestioCarpetes', 'GestioCarpetes', 'manage_options', 'gestio-menu-carpetes', 'crear_menu_carpetes');}
-  add_submenu_page( 'gestio-menu', 'GestioClients', 'GestioClients', 'manage_options', 'gestio-menu-clients', 'crear_menu_clients');
+  //add_submenu_page( 'gestio-menu', 'GestioClients', 'GestioClients', 'manage_options', 'gestio-menu-clients', 'crear_menu_clients');
   add_submenu_page( '', 'GestioClientConcret', 'GestioClientConcret', 'manage_options', 'gestio-menu-clients-concret', 'crear_menu_client_concret');
   if (estat_modul("GestioContrasenyes")=="true"){add_submenu_page( 'gestio-menu', 'GestioContrasenyes', 'GestioContrasenyes', 'manage_options', 'gestio-menu-contrasenyes', 'crear_menu_contrasenyes');}
   if (estat_modul("GestioCodi")=="true"){add_submenu_page( 'gestio-menu', 'GestioCodi', 'GestioCodi', 'manage_options', 'gestio-menu-codi', 'crear_menu_codi');}
@@ -107,7 +108,7 @@ function crear_menu_general(){
 }
 
 function crear_menu_clients(){
-    include 'views/vista_clients_gd.php';
+    //include 'views/vista_clients_gd.php';
 }
 
 function crear_menu_client_concret(){

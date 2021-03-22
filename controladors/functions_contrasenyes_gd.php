@@ -19,7 +19,7 @@
                       <div class='col-md-1 td_assignacio_info'>".$contrasenyes[$i]->tipo_contrasenya."</div>
                       <div class='col-md-2 td_assignacio_info'>".$contrasenyes[$i]->descripcio."</div>
                       <div class='col-md-2 td_assignacio_info user_camp'>".$contrasenyes[$i]->usuari."</div>
-                      <div class='col-md-2 td_assignacio_info user_camp'>".$contrasenyes[$i]->contrasenya."</div>
+                      <div class='col-md-2 td_assignacio_info user_camp contra'>".$contrasenyes[$i]->contrasenya."</div>
                       <div class='col-md-2 td_assignacio_info'><a class='href_contrasenya' href=".$contrasenyes[$i]->url." target='_blank'><img class='img_web' src=".plugins_url( 'gestiodocumentalpluguin/assets/img/icono-web.png' )."></a><img class='img_web href_dns' url='".$contrasenyes[$i]->url."' src=".plugins_url( 'gestiodocumentalpluguin/assets/img/icono-dns.png' )."></div>
                       <div class='col-md-2 td_assignacio_info'>".$contrasenyes[$i]->comentari."</div>
                       <div class='col-md-1 td_assignacio_info'>
@@ -29,6 +29,12 @@
                   </div>";
         }
         return $td;
+    }
+    //Funcio que retornara els tipus de contrasenya ja existents que tenim a la BD
+    function obtenirTipusContrasenyaExistents(){
+        global $wpdb;
+        $tipusExistents = $wpdb->get_results( "SELECT tipo_contrasenya FROM ( SELECT id, tipo_contrasenya, descripcio, usuari, contrasenya, comentari, url, @rn := IF(@prev = tipo_contrasenya, @rn + 1, 1) AS rn, @prev := tipo_contrasenya FROM gd_pluguin_contrasenyes JOIN (SELECT @prev := NULL, @rn := 0) AS vars ORDER BY tipo_contrasenya DESC ) AS T1 WHERE rn <= 1" );
+        return $tipusExistents;
     }
     //Funcio que retornara el numero de contrasenyes que tenim a la BD
     function obtenirContrasenyesTotals(){

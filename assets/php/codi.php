@@ -56,6 +56,71 @@ function crear_entrades_automatiques(){
     }
     //print_r($array_poblacions);
 }
+/**************************************CONTROLAR ENVIO CORREUS AMB PLUGUIN CONTACT FORM I CRON*********************************************/
+// CRON QUE ENVIARÀ UNA CONFIRMACIÓ ALS QUE OMLEN EL FORMULARI DE ENVIAR CURRICULUM
+// Si envien el curriculum més tard de les 12 ho enviarà el dia següent.
+
+add_action('init', 'custom_plugin_function_eventoos');
+function custom_plugin_function_eventoos() {
+    if (wp_next_scheduled('comprobarenvios') == false) {
+        wp_schedule_event(time(), 'wp_wc_updater_cron_interval', 'comprobarenvios');
+    }
+    add_action('comprobarenvios', 'custom_plugin_functionses');
+}
+
+// ---- Execute custom plugin function.
+function custom_plugin_functionses() {
+	
+	//Array on aniran els formularis pendents de envia confirmacio
+	$formularisBD=array();	
+
+	//INICIEM BD
+	global $wpdb;
+
+	//Consultem la BD
+	$SQL_Formularis="SELECT * FROM dljjd_db7_forms where form_post_id in (3227,2994,1178,1153) and enviat_resposta != 1";
+	$rowFormularis = $wpdb->get_results($SQL_Formularis);
+
+	for ($i=0; $i<count($rowFormularis);$i++){
+		$correu= explode('"', $rowFormularis[$i]->form_value);
+		//print_r($correu);
+
+		
+		$horaActualServidor = date('H:i:s', strtotime('2 hour'));
+		$horaLimit = "12:00:00";
+
+		if ($horaActualServidor <= strtotime($horaLimit)){
+			array_push($formularisBD, array('id_formulari'=>$rowFormularis[$i]->form_id,'nom' => $correu[7],'email' => $correu[11], 'enviat_resposta'=>$rowFormularis[$i]->enviat_resposta));
+		}
+	}
+
+	if(count($formularisBD) > 0){
+		for ($i=0; $i<count($formularisBD);$i++){
+
+			$text = 'Hola '.$formularisBD[$i]['nom'].'<br><br>';
+			$text .= 'Muchas gracias por enviar el CV a PAMPOLS y por tu interés por formar parte de nuestro equipo.<br><br>'; 
+			$text .= 'Lo tendremos en cuenta para las vacantes que tengamos y, en el caso de que tu perfil encaje, contactaremos contigo para concertar una entrevista.<br><br>'; 
+		 	$text .= 'Saludos, ';
+	
+			$to = $formularisBD[$i]['email'];
+                        $subject = 'Curriculum Recibido!';
+                        $body = $text;
+                        $headers = array('Content-Type: text/html; charset=UTF-8');
+			
+			$mailResult = false;
+                        $mailResult = wp_mail( $to, $subject, $body, $headers );
+			
+			if ($mailResult==TRUE){
+				$wpdb->get_results('update dljjd_db7_forms set enviat_resposta=1 where form_id ='.$formularisBD[$i]['id_formulari']);
+			}else{
+				$wpdb->get_results('update dljjd_db7_forms set enviat_resposta=2 where form_id ='.$formularisBD[$i]['id_formulari']);
+			}
+		
+				
+		}
+	}
+
+}
 /**************************************AFEFIR DESCRIPCIO CATEGORIA PRODUCTES*********************************************/
 function woocommerce_after_shop_loop_item_title_short_description() {
 	global $product;
@@ -370,6 +435,44 @@ function crear_entrades_automatiques(){
 	}
     
 }
+/******************************DESACTIVAR TENDA WOOCOMMERCE TEMPORALMENT***/
+
+add_action( 'init', 'bbloomer_hide_price_add_cart_not_logged_in' );
+  
+function bbloomer_hide_price_add_cart_not_logged_in() {
+   
+      remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+      remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
+      remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10 );
+      remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
+   
+}
+
+/******************************ACTIVAR CUPÓ DESCOMPTE PRIMERA COMPRA WORDPRESS***/
+
+add_action( 'woocommerce_before_checkout_form', 'aplicar_cupo_primera_compra' );
+add_action( 'woocommerce_before_cart', 'aplicar_cupo_primera_compra' );
+
+function aplicar_cupo_primera_compra() {
+	$coupon_code = 'holatrufas';
+	if(is_user_logged_in()) {
+		
+		$customer_orders = get_posts( array(
+			'numberposts' => -1,
+			'meta_key'    => '_customer_user',
+			'meta_value'  => get_current_user_id(),
+			'post_type'   => wc_get_order_types(),
+			'post_status' => array_keys( wc_get_order_statuses() ),
+		) );
+		
+		if(count($customer_orders) <= 0) {
+			if ( WC()->cart->has_discount( $coupon_code ) ) return;
+			WC()->cart->apply_coupon( $coupon_code );
+			wc_print_notices();
+		}
+	}
+}
+
 /**PRESTASHOP CATEGORIES TPL**/
 
 {foreach from=Product::getProductCategoriesFull(Tools::getValue('id_product')) item=cat}
@@ -399,3 +502,16 @@ update ps_product_shop p LEFT JOIN ps_product_lang pl ON p.id_product=pl.id_prod
 update ps_product p LEFT JOIN ps_product_lang pl ON p.id_product=pl.id_product set p.id_category_default = 36 where p.id_category_default = 208 and pl.name like '%pantalon%'	
 # productes amb combinacions que no tenen referencia SELECT a.id_product, a.id_product_attribute, l.name FROM indikid.prstshp_product_attribute a LEFT JOIN prstshp_product_lang l ON l.id_product = a.id_product where a.reference = '' AND l.id_lang = 1
 # productes simples que no tenen referencia SELECT p.id_product, l.name FROM indikid.prstshp_product p LEFT JOIN prstshp_product_attribute a on a.id_product = p.id_product LEFT JOIN prstshp_product_lang l ON l.id_product = p.id_product where p.reference = '' AND a.id_product_attribute is null group by id_product
+
+	
+/**PLESK FER QUE CARREGUI AMB ELS ENLLAÇOS PERMANENTS**/
+	configuracion del apache o nginx
+if (!-e $request_filename) {
+	set $test P;
+}
+if ($uri !~ ^/(plesk-stat|webstat|webstat-ssl|ftpstat|anon_ftpstat|awstats-icon|internal-nginx-static-location)) {
+	set $test "${test}C";
+}
+if ($test = PC) {
+	rewrite ^/(.*)$ /index.php?$1;
+}

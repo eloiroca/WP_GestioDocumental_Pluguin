@@ -595,6 +595,14 @@ input#filtrar {
     word-wrap: break-word;
 }
 
+.col-md-2.td_assignacio_info.user_camp.contra:hover {
+    color: blue;
+}
+
+.col-md-2.td_assignacio_info.user_camp.contra {
+    color: transparent;
+}
+
 .totes_les_contrasenyes, .contrasenya_vista_previa {
     width: 100%;
 }
@@ -610,9 +618,9 @@ input#filtrar {
 
 }
 
-img.img_web {
+/*img.img_web {
     width: 40px;
-}
+}*/
 
 #filtre_contrasenyes{
     border-image-slice: 1;

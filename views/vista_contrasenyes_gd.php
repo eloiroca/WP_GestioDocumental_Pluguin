@@ -71,6 +71,15 @@
                       <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
                         <span class="label-input100">Tipus</span>
               					<input class="input100" type="text" name="tipus_contrasenya" placeholder="" required>
+                        <label for="existents_tipus">Tria un <i>Tipus</i> ja existent:</label>
+                          <select name="existents_tipus" id="existents_tipus">
+                            <?php
+                              $tipusExistentsContrasenyes = obtenirTipusContrasenyaExistents();
+                              for ($x = 0; $x < count($tipusExistentsContrasenyes); $x++) {
+                                  echo '<option value="'.$tipusExistentsContrasenyes[$x]->tipo_contrasenya.'">'.$tipusExistentsContrasenyes[$x]->tipo_contrasenya.'</option>';
+                              }
+                            ?>
+                        </select>
               				</div>
 
                       <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
