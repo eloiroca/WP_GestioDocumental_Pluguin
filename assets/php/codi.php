@@ -121,6 +121,22 @@ function custom_plugin_functionses() {
 	}
 
 }
+/**************************************ELIMINAR APARTATS MENUS SUBMENU OCULTAR********************************************/
+function wpdocs_remove_menus(){
+  $usuari_connectat = get_current_user_id();
+	if($usuari_connectat==865 || $usuari_connectat==866){
+  		remove_menu_page( 'sb-instagram-feed' );
+  		remove_menu_page( 'email-log' );
+		remove_submenu_page( 'appointments','gestio_alertes' );
+		remove_submenu_page( 'appointments','gestio_notificacio_app' );
+		remove_submenu_page( 'appointments','app_faq' );
+		remove_submenu_page( 'appointments','appointments' );
+		remove_submenu_page( 'appointments','app_settings' );
+		remove_submenu_page( 'appointments','app_transactions' );
+		//header('Location: https://www.tennisbalaguer.com/wp-admin/admin.php?page=invitats');
+	}
+}
+add_action( 'admin_menu', 'wpdocs_remove_menus' );
 /**************************************AFEFIR DESCRIPCIO CATEGORIA PRODUCTES*********************************************/
 function woocommerce_after_shop_loop_item_title_short_description() {
 	global $product;
@@ -181,6 +197,18 @@ function filtre_columnes_productes( $columns ) {
 	return $columns;
 }
 add_filter( 'manage_edit-product_columns', 'filtre_columnes_productes', 10, 1 );
+
+
+//Fer que al filtrar columnes de taules de wordpress s'ordeni per numero correctament
+
+if ($vars['orderby']=='ordre') {
+	// Afegir els parametres orderby meta_value i meta_key parameters a la consulta
+	$vars = array_merge( $vars, array(
+		'meta_key' => $vars['orderby'],
+		'orderby' => 'meta_value_num',
+		'meta_type' => 'NUMERIC',
+	));
+}
 
 //Fer que surtin les subcategories de la categoria actual al widget de l'esquerra
 
