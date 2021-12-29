@@ -17,7 +17,7 @@
         for ($i=0;$i<count($contrasenyes);$i++){
             $td .= "<div class='td_assignacio row '>
                       <div class='col-md-1 td_assignacio_info'>".$contrasenyes[$i]->tipo_contrasenya."</div>
-                      <div class='col-md-2 td_assignacio_info'>".$contrasenyes[$i]->descripcio."</div>
+                      <div class='col-md-2 td_assignacio_info domini_camp'>".$contrasenyes[$i]->descripcio."</div>
                       <div class='col-md-2 td_assignacio_info user_camp'>".$contrasenyes[$i]->usuari."</div>
                       <div class='col-md-2 td_assignacio_info user_camp contra'>".$contrasenyes[$i]->contrasenya."</div>
                       <div class='col-md-2 td_assignacio_info'><a class='href_contrasenya' href=".$contrasenyes[$i]->url." target='_blank'><img class='img_web' src=".plugins_url( 'gestiodocumentalpluguin/assets/img/icono-web.png' )."></a><img class='img_web href_dns' url='".$contrasenyes[$i]->url."' src=".plugins_url( 'gestiodocumentalpluguin/assets/img/icono-dns.png' )."></div>
