@@ -4,7 +4,7 @@ jQuery(document).ready(function(){
   //Fer que puguem aplicar botons despres de les crides ajax
   actualitzarEventsJScontrasenyes();
   //Event de copiar al portapapeles les contrasenyes
-  jQuery('.td_assignacio_info').click(function () {
+  jQuery('.td_assignacio_info.user_camp').click(function () {
     copiarAlPortapapers(jQuery(this));
 
   });

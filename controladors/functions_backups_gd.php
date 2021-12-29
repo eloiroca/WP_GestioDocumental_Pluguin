@@ -29,7 +29,7 @@
   function realitzar_backup_db(){
     //aa
     //MySQL server and database
-    $dbhost = 'localhost';
+    $dbhost = 'localhost:3307';
     $dbuser = 'root';
     $dbpass = '';
     $dbname = 'gestiodocumental_bd';
