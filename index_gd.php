@@ -9,7 +9,7 @@ Author URI:
 License:
 License URI:
 */
-$versio = "1.3.4";
+$versio = "1.3.5";
 include 'controladors\functions_carpetes_gd.php';
 include 'controladors\functions_contrasenyes_gd.php';
 include 'controladors\functions_codi_gd.php';
@@ -18,7 +18,7 @@ include 'controladors\functions_clients_gd.php';
 //Encuarem els estils, JS, etc dins del wordpress
 
 function encuar_estils_pluguin(){
-    $versio = "1.3.4";
+    $versio = "1.3.5";
 
     wp_enqueue_style( 'style-modals', plugins_url( 'gestiodocumentalpluguin/assets/css/formularis_modals.css'), array(), $versio);
     wp_enqueue_style( 'style-pluguin-pujarFitxers1', plugins_url( 'gestiodocumentalpluguin/assets/css/jquery.dm-uploader.min.css'), array(), $versio);

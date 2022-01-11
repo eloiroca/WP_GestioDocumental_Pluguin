@@ -21,7 +21,7 @@
                       <div class='col-md-2 td_assignacio_info user_camp'>".$contrasenyes[$i]->usuari."</div>
                       <div class='col-md-2 td_assignacio_info user_camp contra'>".$contrasenyes[$i]->contrasenya."</div>
                       <div class='col-md-2 td_assignacio_info'><a class='href_contrasenya' href=".$contrasenyes[$i]->url." target='_blank'><img class='img_web' src=".plugins_url( 'gestiodocumentalpluguin/assets/img/icono-web.png' )."></a><img class='img_web href_dns' url='".$contrasenyes[$i]->url."' src=".plugins_url( 'gestiodocumentalpluguin/assets/img/icono-dns.png' )."></div>
-                      <div class='col-md-2 td_assignacio_info'>".$contrasenyes[$i]->comentari."</div>
+                      <div class='col-md-2 td_assignacio_info comentari_camp'>".$contrasenyes[$i]->comentari."</div>
                       <div class='col-md-1 td_assignacio_info'>
                           <button type='button' name='button' class='btn btn-warning btn_fitxers btn_modificarContrasenya' data_id=".$contrasenyes[$i]->id."><img class='imgOpcions_contra mida_contra' src=".plugins_url( 'gestiodocumentalpluguin/assets/img/icono-renombrar.png')."></button>
                           <button type='button' name='button' class='btn btn-danger btn_fitxers btn_eliminarContrasenya' data_id=".$contrasenyes[$i]->id."><img class='imgOpcions_contra mida_contra' src=".plugins_url( 'gestiodocumentalpluguin/assets/img/icono-eliminar.png')."></button>
