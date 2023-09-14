@@ -302,7 +302,13 @@ function load_my_script(){
 }
 add_action('wp_enqueue_scripts', 'load_my_script');
 wp_enqueue_style('compsaonline','/wp-content/themes/kallyas/css/compsaonline.css');
-
+/****************************DESACTIVAR ACTUALITZACIONS***************************************/
+define('DISALLOW_FILE_MODS',true);
+//Desactivar actualitzacions wordpress core
+function kinsta_hide_update_nag() {
+	remove_action( 'admin_notices', 'update_nag', 3 );
+}
+add_action('admin_menu','kinsta_hide_update_nag');
 /***************************ELIMINAR REDIMENCIONAR FOTOS**************************************/
 function remove_image_sizes( $sizes, $metadata ) {
     return [];
@@ -501,6 +507,16 @@ function aplicar_cupo_primera_compra() {
 	}
 }
 
+//Habilitar la pujada de fitxers bloquejats pel wordpress
+function wpse_6533_map_unrestricted_upload_filter($caps, $cap) {
+  if ($cap == 'unfiltered_upload') {
+    $caps = array();
+    $caps[] = $cap;
+  }
+
+  return $caps;
+}
+
 /**PRESTASHOP CATEGORIES TPL**/
 
 {foreach from=Product::getProductCategoriesFull(Tools::getValue('id_product')) item=cat}
@@ -531,6 +547,8 @@ update ps_product p LEFT JOIN ps_product_lang pl ON p.id_product=pl.id_product s
 # productes amb combinacions que no tenen referencia SELECT a.id_product, a.id_product_attribute, l.name FROM indikid.prstshp_product_attribute a LEFT JOIN prstshp_product_lang l ON l.id_product = a.id_product where a.reference = '' AND l.id_lang = 1
 # productes simples que no tenen referencia SELECT p.id_product, l.name FROM indikid.prstshp_product p LEFT JOIN prstshp_product_attribute a on a.id_product = p.id_product LEFT JOIN prstshp_product_lang l ON l.id_product = p.id_product where p.reference = '' AND a.id_product_attribute is null group by id_product
 
+//Afegir productes a una categoria de forma massiva
+INSERT IGNORE INTO prstshp_category_product SELECT 192, id_product, ((SELECT MAX(position) FROM prstshp_category_product WHERE id_category = 192) + (@inc := @inc + 1)) FROM prstshp_product_lang INNER JOIN (SELECT @inc := 0) AS i WHERE `name` LIKE "%peine%";
 	
 /**PLESK FER QUE CARREGUI AMB ELS ENLLAÇOS PERMANENTS**/
 	configuracion del apache o nginx

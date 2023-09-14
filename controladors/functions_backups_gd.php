@@ -32,7 +32,7 @@
     $dbhost = 'localhost:3307';
     $dbuser = 'root';
     $dbpass = '';
-    $dbname = 'gestiodocumental_bd';
+    $dbname = 'gestiodocumentalbd';
     $tables = obtenirParametreTaulesDefecte();
 
     backup_tables($dbhost, $dbuser, $dbpass, $dbname, $tables);
