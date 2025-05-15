@@ -333,6 +333,34 @@ add_filter( 'intermediate_image_sizes_advanced', 'remove_image_sizes', 10, 2 );
 		//CODI..
 	});
 </script>
+	
+/**************************HABILITAR PUJAR FONTS PERSONALITZADES****************************/
+
+function custom_mime_types($mimes) {
+    // Agregar tipo de archivo .ttf
+    $mimes['ttf'] = 'font/ttf';
+    return $mimes;
+}
+add_filter('upload_mimes', 'custom_mime_types');
+
+// Permitir a los administradores subir cualquier tipo de archivo
+function my_custom_upload_mimes($existing_mimes) {
+    // Añadir .ttf al array de tipos mime
+    $existing_mimes['ttf'] = 'font/ttf';
+    return $existing_mimes;
+}
+add_filter('upload_mimes', 'my_custom_upload_mimes', 1, 1);
+
+// Bypass upload restrictions
+function disable_real_mime_check($data, $file, $filename, $mimes) {
+    $wp_filetype = wp_check_filetype($filename, $mimes);
+    $ext = $wp_filetype['ext'];
+    $type = $wp_filetype['type'];
+    $proper_filename = $data['proper_filename'];
+
+    return compact('ext', 'type', 'proper_filename');
+}
+add_filter('wp_check_filetype_and_ext', 'disable_real_mime_check', 10, 4);
 		
 /*****************************MODIFICAR CHECKOUT**********************************************/
 
@@ -560,4 +588,8 @@ if ($uri !~ ^/(plesk-stat|webstat|webstat-ssl|ftpstat|anon_ftpstat|awstats-icon|
 }
 if ($test = PC) {
 	rewrite ^/(.*)$ /index.php?$1;
+}
+/**PLESK FER QUE REDIRECCIONI TOTS ELS LINKS VELLS ALS NOUS**/
+if ($host = 'webnova.campingdelremei.com') {
+	return 301 https://campingdelremei.com$request_uri;
 }
