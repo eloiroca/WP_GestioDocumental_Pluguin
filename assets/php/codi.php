@@ -361,6 +361,46 @@ function disable_real_mime_check($data, $file, $filename, $mimes) {
     return compact('ext', 'type', 'proper_filename');
 }
 add_filter('wp_check_filetype_and_ext', 'disable_real_mime_check', 10, 4);
+
+// Permitir subir SVG
+function permitir_svg_uploads($mimes) {
+    $mimes['svg'] = 'image/svg+xml';
+    return $mimes;
+}
+add_filter('upload_mimes', 'permitir_svg_uploads');
+
+// Sanitizar SVG al subir
+// Permitir SVG en WordPress
+function ms_allow_svg_uploads($mimes) {
+    $mimes['svg']  = 'image/svg+xml';
+    $mimes['svgz'] = 'image/svg+xml';
+    return $mimes;
+}
+add_filter('upload_mimes', 'ms_allow_svg_uploads');
+
+// Corregir chequeo de seguridad al subir SVG
+function ms_fix_svg_check($data, $file, $filename, $mimes, $real_mime) {
+    $wp_filetype = wp_check_filetype($filename, $mimes);
+
+    if ($wp_filetype['ext'] === 'svg') {
+        $data['ext']  = 'svg';
+        $data['type'] = 'image/svg+xml';
+    }
+
+    return $data;
+}
+add_filter('wp_check_filetype_and_ext', 'ms_fix_svg_check', 10, 5);
+
+// Previsualizar SVG en la librería de medios
+function ms_svg_preview() {
+    echo '<style>
+        .attachment-266x266, .thumbnail img {
+            width: 100% !important;
+            height: auto !important;
+        }
+    </style>';
+}
+add_action('admin_head', 'ms_svg_preview');
 		
 /*****************************MODIFICAR CHECKOUT**********************************************/
 
@@ -544,6 +584,17 @@ function wpse_6533_map_unrestricted_upload_filter($caps, $cap) {
 
   return $caps;
 }
+
+//FER QUE UN IFRAME SIGUI RESPONSIVE
+<iframe id="myiframe" 
+src="//preview.codetickets.com/portal/subiros?lang=es_ES&iframe=true" 
+frameborder="0" style="min-width: 100%;"></iframe>
+<script 
+src="https://www.mardoweb.com/iframe/iframeResizer.min.js"></script>
+<script>
+      iFrameResize({ log: true} , '#myiframe');
+</script>
+
 
 /**PRESTASHOP CATEGORIES TPL**/
 
