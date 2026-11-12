@@ -20,7 +20,7 @@
                       <div class='col-md-2 td_assignacio_info domini_camp'>".$contrasenyes[$i]->descripcio."</div>
                       <div class='col-md-2 td_assignacio_info user_camp'>".$contrasenyes[$i]->usuari."</div>
                       <div class='col-md-2 td_assignacio_info user_camp contra'>".$contrasenyes[$i]->contrasenya."</div>
-                      <div class='col-md-2 td_assignacio_info'><a class='href_contrasenya' href=".$contrasenyes[$i]->url." target='_blank'><img class='img_web' src=".plugins_url( 'gestiodocumentalpluguin/assets/img/icono-web.png' )."></a><img class='img_web href_dns' url='".$contrasenyes[$i]->url."' src=".plugins_url( 'gestiodocumentalpluguin/assets/img/icono-dns.png' )."></div>
+                      <div class='col-md-2 td_assignacio_info'><a class='href_contrasenya' href=".$contrasenyes[$i]->url." target='_blank'><img class='img_web' src=".plugins_url( 'gestiodocumentalpluguin/assets/img/icono-web.png' )."></a><img class='img_web href_dns' url='".$contrasenyes[$i]->url."' src=".plugins_url( 'gestiodocumentalpluguin/assets/img/icono-security.png' )."></div>
                       <div class='col-md-2 td_assignacio_info comentari_camp'>".$contrasenyes[$i]->comentari."</div>
                       <div class='col-md-1 td_assignacio_info'>
                           <button type='button' name='button' class='btn btn-warning btn_fitxers btn_modificarContrasenya' data_id=".$contrasenyes[$i]->id."><img class='imgOpcions_contra mida_contra' src=".plugins_url( 'gestiodocumentalpluguin/assets/img/icono-renombrar.png')."></button>
@@ -49,25 +49,136 @@
         global $wpdb;
         $wpdb->get_results( "insert into gd_pluguin_contrasenyes (tipo_contrasenya, descripcio, usuari, contrasenya, url, comentari) values ('".$_POST['valorTipus']."','".$_POST['valorDescripcio']."','".$_POST['valorUsuari']."','".$_POST['valorContrasenya']."','".$_POST['valorUrl']."','".$_POST['valorComentari']."')" );
     }
-    //Funcio que mirara quina dns te la URL
-    add_action( 'wp_ajax_preguntarDNS', 'preguntarDNS' );
-    function preguntarDNS(){
-      $domini = $_POST['valorUrl'];
-      $ip = "";
-      if ($domini == '#'){
-          $ip = "No es pot consultar perque no hi ha URL d'aquesta contrasenya";
-      }else {
-          $domini = explode("/", $domini);
-          $dns = dns_get_record($domini[2]);
+    //Funcions per comprovar si la web es vulnerable a PHP2SHELL
+    if (!defined('PHP2SHELL_VULNERABLE_THROUGH')) {
+        define('PHP2SHELL_VULNERABLE_THROUGH', [
+            '5.4' => 45, '5.5' => 38, '5.6' => 40,
+            '7.0' => 33, '7.1' => 33, '7.2' => 34, '7.3' => 33, '7.4' => 33,
+            '8.0' => 30, '8.1' => 34, '8.2' => 34, '8.3' => 35, '8.4' => 26, '8.5' => 11,
+        ]);
+    }
 
-          for ($i=0; $i<count($dns);$i++){
-              $ip = $dns[$i]['ip'];
-          }
-          if ($ip == ""){
-              $ip = "No hi ha entrada IP";
-          }
+    if (!function_exists('php2shell_assess_version')) {
+        function php2shell_assess_version(string $version): string
+        {
+            if (!preg_match('/^(\d+)\.(\d+)\.(\d+)([-+~].*)?$/', $version, $match)) return 'unknown';
+            $branch = ((int)$match[1]) . '.' . ((int)$match[2]);
+            $vulnerableThrough = PHP2SHELL_VULNERABLE_THROUGH;
+            if (!array_key_exists($branch, $vulnerableThrough)) return 'unknown';
+            if ((int)$match[3] <= $vulnerableThrough[$branch]) return 'vulnerable';
+            if (!empty($match[4]) && preg_match('/(?:^|[-+~.])(?:dev|alpha|beta|rc)/i', $match[4])) return 'unknown';
+            return 'ok';
+        }
+    }
+
+    if (!function_exists('php2shell_is_public_address')) {
+        function php2shell_is_public_address(string $ip): bool
+        {
+            return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false;
+        }
+    }
+
+    if (!function_exists('php2shell_resolve_public_host')) {
+        function php2shell_resolve_public_host(string $host): bool
+        {
+            if (filter_var($host, FILTER_VALIDATE_IP)) return php2shell_is_public_address($host);
+            $records = @dns_get_record($host, DNS_A | DNS_AAAA);
+            if (!$records) return false;
+            $ips = [];
+            foreach ($records as $record) {
+                if (!empty($record['ip'])) $ips[] = $record['ip'];
+                if (!empty($record['ipv6'])) $ips[] = $record['ipv6'];
+            }
+            return count($ips) > 0 && !in_array(false, array_map('php2shell_is_public_address', $ips), true);
+        }
+    }
+
+    if (!function_exists('php2shell_check_website')) {
+        function php2shell_check_website(string $input): array
+        {
+            $input = trim($input);
+            if ($input === '' || preg_match('/[\x00-\x20\x7f]/', $input)) throw new RuntimeException('Introduce una URL válida, sin espacios.');
+            if (!preg_match('~^https?://~i', $input)) $input = 'https://' . $input;
+            $url = parse_url($input);
+            if (!$url || empty($url['host']) || !in_array(strtolower($url['scheme'] ?? ''), ['http', 'https'], true)) {
+                throw new RuntimeException('Usa una dirección válida que empiece por http:// o https://.');
+            }
+            if (isset($url['user']) || isset($url['pass']) || isset($url['fragment'])) throw new RuntimeException('No se admiten credenciales ni fragmentos en la URL.');
+            $host = trim($url['host'], '[]');
+            if (!php2shell_resolve_public_host($host)) throw new RuntimeException('No se pudo resolver el dominio público. Por seguridad, no se permiten direcciones locales o privadas.');
+
+            $target = $input;
+            $headers = [];
+            $statusCode = null;
+            foreach (['HEAD', 'GET'] as $method) {
+                $context = stream_context_create(['http' => [
+                    'method' => $method,
+                    'timeout' => 10,
+                    'ignore_errors' => true,
+                    'follow_location' => 0,
+                    'max_redirects' => 0,
+                    'header' => "User-Agent: PHP Security Patch Checker/1.0\r\nConnection: close\r\n",
+                ], 'ssl' => ['verify_peer' => true, 'verify_peer_name' => true]]);
+                $response = @get_headers($target, true, $context);
+                if ($response === false) throw new RuntimeException('No se pudo conectar con el sitio. Comprueba la URL y que el servidor esté accesible.');
+                $statusLine = is_array($response) ? ($response[0] ?? '') : '';
+                if (preg_match('/\s(\d{3})\b/', (string)$statusLine, $code)) $statusCode = (int)$code[1];
+                $headers = is_array($response) ? $response : [];
+                if (!in_array($statusCode, [405, 501], true) || $method === 'GET') break;
+            }
+
+            $advertised = [];
+            foreach (['X-Powered-By', 'Server'] as $name) {
+                $value = $headers[$name] ?? $headers[strtolower($name)] ?? null;
+                foreach ((array)$value as $header) {
+                    if (preg_match_all('/\bPHP[ \/]([^\s,;)]+)/i', (string)$header, $matches)) {
+                        foreach ($matches[1] as $version) $advertised[] = $version;
+                    }
+                }
+            }
+            $version = null;
+            $status = 'unknown';
+            foreach ($advertised as $candidate) {
+                $candidateStatus = php2shell_assess_version($candidate);
+                if ($version === null || $candidateStatus === 'vulnerable' || $status === 'ok') {
+                    $version = $candidate;
+                    $status = $candidateStatus;
+                }
+                if ($status === 'vulnerable') break;
+            }
+            return ['status' => $status, 'version' => $version, 'http_code' => $statusCode];
+        }
+    }
+
+    //Funcio que mirara si la URL es vulnerable a PHP2SHELL
+    add_action( 'wp_ajax_preguntarDNS', 'comprovarPHP2Shell' );
+    add_action( 'wp_ajax_comprovarPHP2Shell', 'comprovarPHP2Shell' );
+    function comprovarPHP2Shell(){
+      $domini = isset($_POST['valorUrl']) ? trim((string)$_POST['valorUrl']) : '';
+      if ($domini === '' || $domini === '#'){
+          echo json_encode([
+              'ok' => false,
+              'domain' => $domini,
+              'error' => "No es pot consultar perque no hi ha URL d'aquesta contrasenya"
+          ], JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
+          wp_die();
       }
-      echo $ip;
+
+      try {
+          $result = php2shell_check_website($domini);
+          echo json_encode([
+              'ok' => true,
+              'domain' => $domini,
+              'result' => $result
+          ], JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
+      } catch (Throwable $e) {
+          echo json_encode([
+              'ok' => false,
+              'domain' => $domini,
+              'error' => $e->getMessage()
+          ], JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
+      }
+      wp_die();
     }
 
     //Funcio que eliminara una contrasenya

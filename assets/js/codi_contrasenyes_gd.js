@@ -17,25 +17,94 @@ jQuery(document).ready(function(){
       });
   });
   jQuery('.href_dns').click(function() {
-    var data = {'action': 'preguntarDNS',
-            'valorUrl' : jQuery(this).attr('url')
-          }
-    jQuery.ajax({
-          type : "post",
-          url : ajax_object.ajax_url,
-          data : data,
-          success: function(response) {
-              response = response.slice(0, -1)
-              Swal.fire({
-                title: '<strong>DNS Actual</strong>',
-                type: 'info',
-                html: '<b>'+ response + '</b>'
-              })
-          },
-          error: function(response){
-              console.log(response);
-          }
+    var rawUrl = jQuery(this).attr('url');
+    if (!rawUrl || rawUrl === '#') {
+      Swal.fire({
+        title: '<strong>Comprobación PHP2SHELL</strong>',
+        type: 'warning',
+        html: '<p>No se puede consultar porque no hay una URL válida para esta contraseña.</p>'
       });
+      return;
+    }
+
+    Swal.fire({
+      title: 'Comprobando PHP2SHELL...',
+      text: 'Consultando las cabeceras del servidor (' + rawUrl + ')...',
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      onBeforeOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
+    var data = {
+      'action': 'comprovarPHP2Shell',
+      'valorUrl': rawUrl
+    };
+
+    jQuery.ajax({
+      type: "post",
+      url: ajax_object.ajax_url,
+      data: data,
+      success: function(response) {
+        var dataObj;
+        if (typeof response === 'object') {
+          dataObj = response;
+        } else {
+          try {
+            dataObj = JSON.parse(response);
+          } catch(e) {
+            try {
+              dataObj = JSON.parse(response.slice(0, -1));
+            } catch(e2) {
+              dataObj = { ok: false, error: response };
+            }
+          }
+        }
+
+        if (dataObj && dataObj.ok && dataObj.result) {
+          var state = dataObj.result.status;
+          var version = dataObj.result.version;
+          var httpCode = dataObj.result.http_code;
+          var metaInfo = '<div style="margin-top:10px;font-size:12px;color:#8892a3;">' + rawUrl + (httpCode ? ' · HTTP ' + httpCode : '') + '</div>';
+
+          if (state === 'ok') {
+            Swal.fire({
+              title: '<strong>Parche detectado</strong>',
+              type: 'success',
+              html: '<p>El sitio anuncia <b>PHP ' + (version ? version : '') + '</b>, posterior al corte vulnerable de su rama.</p>' + metaInfo
+            });
+          } else if (state === 'vulnerable') {
+            Swal.fire({
+              title: '<strong>Vulnerabilidad activa</strong>',
+              type: 'error',
+              html: '<p>El sitio anuncia <b>PHP ' + (version ? version : '') + '</b>, una versión afectada por php2shell.</p>' + metaInfo
+            });
+          } else {
+            Swal.fire({
+              title: '<strong>Estado desconocido</strong>',
+              type: 'warning',
+              html: '<p>No se encontró una versión PHP reconocible en las cabeceras. Esto no confirma que el sitio esté protegido.</p>' + metaInfo
+            });
+          }
+        } else {
+          var errorMsg = (dataObj && dataObj.error) ? dataObj.error : 'No se pudo completar el escaneo.';
+          Swal.fire({
+            title: '<strong>No se pudo completar el escaneo</strong>',
+            type: 'error',
+            html: '<p>' + errorMsg + '</p>'
+          });
+        }
+      },
+      error: function(response) {
+        console.log(response);
+        Swal.fire({
+          title: '<strong>Error de conexión</strong>',
+          type: 'error',
+          html: '<p>No se pudo conectar con el servidor para realizar la comprobación.</p>'
+        });
+      }
+    });
 
   });
 
